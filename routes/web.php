@@ -1,18 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\HRController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Rute untuk karyawan dengan nama route ditambahkan
-Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
-Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
-Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
-Route::get('/karyawan/{id}', [KaryawanController::class, 'show'])->name('karyawan.show');
-Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
-Route::put('/karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
-Route::get('/karyawan/{id}/delete', [KaryawanController::class, 'confirmDelete'])->name('karyawan.confirmDelete');
-Route::delete('/karyawan/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
+Route::get('/hr', [HRController::class, 'index'])->name('hr.index');
+Route::get('/hr/create', [HRController::class, 'create'])->name('hr.create');
+Route::post('/hr', [HRController::class, 'store'])->name('hr.store');
+Route::get('/hr/{id}', [HRController::class, 'show'])->name('hr.show');
+Route::get('/hr/{id}/edit', [HRController::class, 'edit'])->name('hr.edit');
+Route::put('/hr/{id}', [HRController::class, 'update'])->name('hr.update');
+Route::get('/hr/{id}/delete', [HRController::class, 'confirmDelete'])->name('hr.confirmDelete');
+Route::delete('/hr/{id}', [HRController::class, 'destroy'])->name('hr.destroy');
