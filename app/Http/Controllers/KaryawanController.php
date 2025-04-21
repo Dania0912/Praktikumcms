@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Karyawan;
+use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
 {
+    // Menyimpan daftar karyawan secara statis
     protected static $karyawanList = [];
 
+    // Mengisi data karyawan secara manual
     private function seed()
     {
         if (empty(self::$karyawanList)) {
@@ -19,17 +21,20 @@ class KaryawanController extends Controller
         }
     }
 
+    // Menampilkan daftar karyawan
     public function index()
     {
         $this->seed();
-        return view('karyawan.index', ['karyawan' => self::$karyawanList]);
+        return view('karyawan.index', ['karyawans' => self::$karyawanList]);
     }
 
+    // Menampilkan form tambah karyawan
     public function create()
     {
         return view('karyawan.create');
     }
 
+    // Menyimpan data karyawan baru
     public function store(Request $request)
     {
         $this->seed();
@@ -42,6 +47,7 @@ class KaryawanController extends Controller
             'Riwayat_Pekerjaan' => 'required'
         ]);
 
+        // Membuat data karyawan baru
         $karyawan = new Karyawan(
             $request->ID_Karyawan,
             $request->Nama,
@@ -51,28 +57,36 @@ class KaryawanController extends Controller
             $request->Riwayat_Pekerjaan
         );
 
+        // Menambah data karyawan ke dalam daftar
         self::$karyawanList[] = $karyawan;
 
         return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil ditambahkan.');
     }
 
+    // Menampilkan detail karyawan
     public function show($id)
     {
         $this->seed();
+        // Mencari karyawan berdasarkan ID
         $karyawan = collect(self::$karyawanList)->firstWhere('ID_Karyawan', $id);
         return view('karyawan.show', ['karyawan' => $karyawan]);
     }
 
+    // Menampilkan form edit karyawan
     public function edit($id)
     {
         $this->seed();
+        // Mencari karyawan berdasarkan ID
         $karyawan = collect(self::$karyawanList)->firstWhere('ID_Karyawan', $id);
         return view('karyawan.edit', ['karyawan' => $karyawan]);
     }
 
+    // Menyimpan pembaruan data karyawan
     public function update(Request $request, $id)
     {
         $this->seed();
+
+        // Mencari karyawan berdasarkan ID dan melakukan update
         foreach (self::$karyawanList as $key => $karyawan) {
             if ($karyawan->ID_Karyawan === $id) {
                 self::$karyawanList[$key]->Nama = $request->Nama;
@@ -82,19 +96,25 @@ class KaryawanController extends Controller
                 self::$karyawanList[$key]->Riwayat_Pekerjaan = $request->Riwayat_Pekerjaan;
             }
         }
+
         return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil diperbarui.');
     }
 
+    // Menampilkan konfirmasi sebelum menghapus karyawan
     public function confirmDelete($id)
     {
         $this->seed();
+        // Mencari karyawan berdasarkan ID
         $karyawan = collect(self::$karyawanList)->firstWhere('ID_Karyawan', $id);
         return view('karyawan.delete', ['karyawan' => $karyawan]);
     }
 
+    // Menghapus data karyawan
     public function destroy($id)
     {
         $this->seed();
+
+        // Menghapus karyawan berdasarkan ID
         self::$karyawanList = array_filter(self::$karyawanList, function ($karyawan) use ($id) {
             return $karyawan->ID_Karyawan !== $id;
         });

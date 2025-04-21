@@ -1,30 +1,34 @@
-<h1>Tambah Penggajian</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+    <h1>Tambah Penggajian</h1>
 
-<form method="POST" action="{{ route('penggajian.store') }}">
-    @csrf
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+        </div>
+    @endif
 
-    <label>ID Penggajian:</label><br>
-    <input type="text" name="ID_Penggajian"><br>
+    <form method="POST" action="{{ route('penggajian.store') }}">
+        @csrf
 
-    <label>Gaji Pokok:</label><br>
-    <input type="number" name="Gaji_Pokok"><br>
+        <label>ID Penggajian:</label><br>
+        <input type="text" name="ID_Penggajian"><br>
 
-    <label>Potongan:</label><br>
-    <input type="number" name="Potongan"><br>
+        <label>Gaji Pokok:</label><br>
+        <input type="number" name="Gaji_Pokok"><br>
 
-    <label>Bonus:</label><br>
-    <input type="number" name="Bonus"><br>
+        <label>Potongan:</label><br>
+        <input type="number" name="Potongan"><br>
 
-    <label>Catatan:</label><br>
-    <textarea name="Catatan"></textarea><br>
+        <label>Bonus:</label><br>
+        <input type="number" name="Bonus"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <label>Catatan:</label><br>
+        <textarea name="Catatan"></textarea><br>
 
-<a href="{{ route('penggajian.index') }}">← Kembali ke daftar</a>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <a href="{{ route('penggajian.index') }}">← Kembali ke daftar</a>
+@endsection

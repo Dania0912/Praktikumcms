@@ -1,27 +1,31 @@
-<h1>Tambah Data Cuti</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+    <h1>Tambah Data Cuti</h1>
 
-<form method="POST" action="{{ route('cuti.store') }}">
-    @csrf
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+        </div>
+    @endif
 
-    <label>ID Cuti:</label><br>
-    <input type="text" name="ID_Cuti"><br>
+    <form method="POST" action="{{ route('cuti.store') }}">
+        @csrf
 
-    <label>Tanggal Mulai:</label><br>
-    <input type="date" name="Tanggal_Mulai"><br>
+        <label>ID Cuti:</label><br>
+        <input type="text" name="ID_Cuti"><br>
 
-    <label>Tanggal Selesai:</label><br>
-    <input type="date" name="Tanggal_Selesai"><br>
+        <label>Tanggal Mulai:</label><br>
+        <input type="date" name="Tanggal_Mulai"><br>
 
-    <label>Keterangan Cuti:</label><br>
-    <input type="text" name="Keterangan_Cuti"><br>
+        <label>Tanggal Selesai:</label><br>
+        <input type="date" name="Tanggal_Selesai"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <label>Keterangan Cuti:</label><br>
+        <input type="text" name="Keterangan_Cuti"><br>
 
-<a href="{{ route('cuti.index') }}">← Kembali</a>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <a href="{{ route('cuti.index') }}">← Kembali</a>
+@endsection

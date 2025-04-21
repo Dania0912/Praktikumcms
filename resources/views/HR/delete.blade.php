@@ -1,12 +1,16 @@
-<h1>Hapus HR</h1>
+@extends('layouts.app')
 
-<p>Apakah Anda yakin ingin menghapus <strong>{{ $hr->Nama }}</strong>?</p>
+@section('content')
+    <h1>Hapus HR</h1>
 
-<form method="POST" action="{{ route('hr.destroy', $hr->ID_HR) }}">
-    @csrf
-    @method('DELETE')
+    <p>Apakah Anda yakin ingin menghapus <strong>{{ $hr->Nama }}</strong>?</p>
 
-    <button type="submit">🗑️ Hapus</button>
-</form>
+    <form method="POST" action="{{ route('hr.destroy', $hr->ID_HR) }}">
+        @csrf
+        @method('DELETE')
 
-<a href="{{ route('hr.index') }}">← Batal</a>
+        <button type="submit">🗑️ Hapus</button>
+    </form>
+
+    <a href="{{ route('hr.index') }}">← Batal</a>
+@endsection

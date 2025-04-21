@@ -1,33 +1,53 @@
-<h1>Tambah Karyawan</h1>
+@extends('layouts.app') <!-- Menggunakan layout app -->
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+<div class="container mt-5">
+    <h1>Tambah Karyawan</h1>
 
-<form method="POST" action="{{ route('karyawan.store') }}">
-    @csrf
+    <!-- Menampilkan pesan error jika ada -->
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    <label>ID Karyawan:</label><br>
-    <input type="text" name="ID_Karyawan"><br>
+    <!-- Form untuk menambah karyawan -->
+    <form method="POST" action="{{ route('karyawan.store') }}">
+        @csrf
 
-    <label>Nama:</label><br>
-    <input type="text" name="Nama"><br>
+        <!-- Input ID Karyawan -->
+        <label>ID Karyawan:</label><br>
+        <input type="text" name="ID_Karyawan" value="{{ old('ID_Karyawan') }}"><br>
 
-    <label>Tanggal Lahir:</label><br>
-    <input type="date" name="Tanggal_Lahir"><br>
+        <!-- Input Nama -->
+        <label>Nama:</label><br>
+        <input type="text" name="Nama" value="{{ old('Nama') }}"><br>
 
-    <label>Alamat:</label><br>
-    <input type="text" name="Alamat"><br>
+        <!-- Input Tanggal Lahir -->
+        <label>Tanggal Lahir:</label><br>
+        <input type="date" name="Tanggal_Lahir" value="{{ old('Tanggal_Lahir') }}"><br>
 
-    <label>Jabatan:</label><br>
-    <input type="text" name="Jabatan"><br>
+        <!-- Input Alamat -->
+        <label>Alamat:</label><br>
+        <input type="text" name="Alamat" value="{{ old('Alamat') }}"><br>
 
-    <label>Riwayat Pekerjaan:</label><br>
-    <input type="text" name="Riwayat_Pekerjaan"><br>
+        <!-- Input Jabatan -->
+        <label>Jabatan:</label><br>
+        <input type="text" name="Jabatan" value="{{ old('Jabatan') }}"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <!-- Input Riwayat Pekerjaan -->
+        <label>Riwayat Pekerjaan:</label><br>
+        <input type="text" name="Riwayat_Pekerjaan" value="{{ old('Riwayat_Pekerjaan') }}"><br>
 
-<a href="{{ route('karyawan.index') }}">← Kembali ke daftar</a>
+        <!-- Tombol Submit -->
+        <button type="submit" class="btn btn-primary mt-3">Simpan</button>
+    </form>
+
+    <!-- Link kembali ke daftar karyawan -->
+    <a href="{{ route('karyawan.index') }}" class="btn btn-secondary mt-3">← Kembali ke daftar</a>
+</div>
+@endsection

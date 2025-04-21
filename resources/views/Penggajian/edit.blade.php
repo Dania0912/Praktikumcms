@@ -1,31 +1,35 @@
-<h1>Edit Penggajian</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+    <h1>Edit Penggajian</h1>
 
-<form method="POST" action="{{ route('penggajian.update', $penggajian->ID_Penggajian) }}">
-    @csrf
-    @method('PUT')
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+        </div>
+    @endif
 
-    <label>ID Penggajian:</label><br>
-    <input type="text" name="ID_Penggajian" value="{{ $penggajian->ID_Penggajian }}" readonly><br>
+    <form method="POST" action="{{ route('penggajian.update', $penggajian->ID_Penggajian) }}">
+        @csrf
+        @method('PUT')
 
-    <label>Gaji Pokok:</label><br>
-    <input type="text" name="Gaji_Pokok" value="{{ $penggajian->Gaji_Pokok }}"><br>
+        <label>ID Penggajian:</label><br>
+        <input type="text" name="ID_Penggajian" value="{{ $penggajian->ID_Penggajian }}" readonly><br>
 
-    <label>Potongan:</label><br>
-    <input type="text" name="Potongan" value="{{ $penggajian->Potongan }}"><br>
+        <label>Gaji Pokok:</label><br>
+        <input type="text" name="Gaji_Pokok" value="{{ $penggajian->Gaji_Pokok }}"><br>
 
-    <label>Bonus:</label><br>
-    <input type="text" name="Bonus" value="{{ $penggajian->Bonus }}"><br>
+        <label>Potongan:</label><br>
+        <input type="text" name="Potongan" value="{{ $penggajian->Potongan }}"><br>
 
-    <label>Catatan:</label><br>
-    <textarea name="Catatan">{{ $penggajian->Catatan }}</textarea><br>
+        <label>Bonus:</label><br>
+        <input type="text" name="Bonus" value="{{ $penggajian->Bonus }}"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <label>Catatan:</label><br>
+        <textarea name="Catatan">{{ $penggajian->Catatan }}</textarea><br>
 
-<a href="{{ route('penggajian.show', $penggajian->ID_Penggajian) }}">← Kembali ke detail</a>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <a href="{{ route('penggajian.show', $penggajian->ID_Penggajian) }}">← Kembali ke detail</a>
+@endsection

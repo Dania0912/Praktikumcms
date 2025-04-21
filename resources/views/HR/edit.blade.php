@@ -1,25 +1,29 @@
-<h1>Edit HR</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+    <h1>Edit HR</h1>
 
-<form method="POST" action="{{ route('hr.update', $hr->ID_HR) }}">
-    @csrf
-    @method('PUT')
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+        </div>
+    @endif
 
-    <label>ID HR:</label><br>
-    <input type="text" name="ID_HR" value="{{ $hr->ID_HR }}" readonly><br>
+    <form method="POST" action="{{ route('hr.update', $hr->ID_HR) }}">
+        @csrf
+        @method('PUT')
 
-    <label>Nama:</label><br>
-    <input type="text" name="Nama" value="{{ $hr->Nama }}"><br>
+        <label>ID HR:</label><br>
+        <input type="text" name="ID_HR" value="{{ $hr->ID_HR }}" readonly><br>
 
-    <label>Jabatan:</label><br>
-    <input type="text" name="Jabatan" value="{{ $hr->Jabatan }}"><br>
+        <label>Nama:</label><br>
+        <input type="text" name="Nama" value="{{ $hr->Nama }}"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <label>Jabatan:</label><br>
+        <input type="text" name="Jabatan" value="{{ $hr->Jabatan }}"><br>
 
-<a href="{{ route('hr.show', $hr->ID_HR) }}">← Kembali ke detail</a>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <a href="{{ route('hr.show', $hr->ID_HR) }}">← Kembali ke detail</a>
+@endsection

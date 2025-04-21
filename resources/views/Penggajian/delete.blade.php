@@ -1,12 +1,16 @@
-<h1>Hapus Penggajian</h1>
+@extends('layouts.app')
 
-<p>Apakah Anda yakin ingin menghapus data penggajian <strong>{{ $penggajian->ID_Penggajian }}</strong>?</p>
+@section('content')
+    <h1>Hapus Penggajian</h1>
 
-<form method="POST" action="{{ route('penggajian.destroy', $penggajian->ID_Penggajian) }}">
-    @csrf
-    @method('DELETE')
+    <p>Apakah Anda yakin ingin menghapus data penggajian <strong>{{ $penggajian->ID_Penggajian }}</strong>?</p>
 
-    <button type="submit">🗑️ Hapus</button>
-</form>
+    <form method="POST" action="{{ route('penggajian.destroy', $penggajian->ID_Penggajian) }}">
+        @csrf
+        @method('DELETE')
 
-<a href="{{ route('penggajian.index') }}">← Batal</a>
+        <button type="submit">🗑️ Hapus</button>
+    </form>
+
+    <a href="{{ route('penggajian.index') }}">← Batal</a>
+@endsection

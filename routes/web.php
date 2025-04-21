@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HRController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\CutiController;
@@ -48,7 +48,7 @@ Route::get('/penggajian/{id}/delete', [PenggajianController::class, 'confirmDele
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
 // ======================== Jadwal Kerja ========================
-Route::get('/jadwalkerja', [JadwalKerjaController::class, 'index'])->name('jadwalkerja.index');
+Route::get('/jadwalkerja', [JadwalKerjaController::class, 'index'])->name('jadwalkerja.index'); 
 Route::get('/jadwalkerja/create', [JadwalKerjaController::class, 'create'])->name('jadwalkerja.create');
 Route::post('/jadwalkerja', [JadwalKerjaController::class, 'store'])->name('jadwalkerja.store');
 Route::get('/jadwalkerja/{id}', [JadwalKerjaController::class, 'show'])->name('jadwalkerja.show');
@@ -56,3 +56,8 @@ Route::get('/jadwalkerja/{id}/edit', [JadwalKerjaController::class, 'edit'])->na
 Route::put('/jadwalkerja/{id}', [JadwalKerjaController::class, 'update'])->name('jadwalkerja.update');
 Route::get('/jadwalkerja/{id}/delete', [JadwalKerjaController::class, 'confirmDelete'])->name('jadwalkerja.confirmDelete');
 Route::delete('/jadwalkerja/{id}', [JadwalKerjaController::class, 'destroy'])->name('jadwalkerja.destroy');
+
+// ======================== Home ========================
+Route::get('/', function () {
+    return view('home');  // Menampilkan halaman home
+});

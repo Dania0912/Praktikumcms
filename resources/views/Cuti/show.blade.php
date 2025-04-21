@@ -1,13 +1,14 @@
-@if ($hr)
-    <h1>{{ $hr->Nama }}</h1>
+@extends('layouts.app')
 
-    <p><strong>ID:</strong> {{ $hr->ID_HR }}</p>
-    <p><strong>Jabatan:</strong> {{ $hr->Jabatan }}</p>
+@section('content')
+    <h1>Detail Cuti</h1>
 
-    <a href="{{ route('hr.edit', $hr->ID_HR) }}">✏️ Edit</a> |
-    <a href="{{ route('hr.confirmDelete', $hr->ID_HR) }}">🗑️ Hapus</a><br>
-@else
-    <p style="color: red;">Data HR tidak ditemukan.</p>
-@endif
+    <p><strong>ID Cuti:</strong> {{ $cuti->ID_Cuti }}</p>
+    <p><strong>Tanggal Mulai:</strong> {{ $cuti->Tanggal_Mulai }}</p>
+    <p><strong>Tanggal Selesai:</strong> {{ $cuti->Tanggal_Selesai }}</p>
+    <p><strong>Keterangan:</strong> {{ $cuti->Keterangan_Cuti }}</p>
 
-<a href="{{ route('hr.index') }}">← Kembali ke daftar</a>
+    <a href="{{ route('cuti.edit', $cuti->ID_Cuti) }}">✏️ Edit</a> |
+    <a href="{{ route('cuti.confirmDelete', $cuti->ID_Cuti) }}">🗑️ Hapus</a><br>
+    <a href="{{ route('cuti.index') }}">← Kembali ke daftar</a>
+@endsection

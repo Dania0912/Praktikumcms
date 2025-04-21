@@ -1,30 +1,34 @@
-<h1>Tambah Jadwal Kerja</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+    <h1>Tambah Jadwal Kerja</h1>
 
-<form method="POST" action="{{ route('jadwalkerja.store') }}">
-    @csrf
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+        </div>
+    @endif
 
-    <label>ID Jadwal:</label><br>
-    <input type="text" name="ID_Jadwal"><br>
+    <form method="POST" action="{{ route('jadwalkerja.store') }}">
+        @csrf
 
-    <label>Tanggal Mulai:</label><br>
-    <input type="date" name="Tanggal_Mulai"><br>
+        <label>ID Jadwal:</label><br>
+        <input type="text" name="ID_Jadwal"><br>
 
-    <label>Tanggal Selesai:</label><br>
-    <input type="date" name="Tanggal_Selesai"><br>
+        <label>Tanggal Mulai:</label><br>
+        <input type="date" name="Tanggal_Mulai"><br>
 
-    <label>Waktu Mulai:</label><br>
-    <input type="time" name="Waktu_Mulai"><br>
+        <label>Tanggal Selesai:</label><br>
+        <input type="date" name="Tanggal_Selesai"><br>
 
-    <label>Waktu Selesai:</label><br>
-    <input type="time" name="Waktu_Selesai"><br>
+        <label>Waktu Mulai:</label><br>
+        <input type="time" name="Waktu_Mulai"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <label>Waktu Selesai:</label><br>
+        <input type="time" name="Waktu_Selesai"><br>
 
-<a href="{{ route('jadwalkerja.index') }}">← Kembali ke daftar</a>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <a href="{{ route('jadwalkerja.index') }}">← Kembali ke daftar</a>
+@endsection

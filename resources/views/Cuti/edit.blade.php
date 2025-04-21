@@ -1,28 +1,32 @@
-<h1>Edit Data Cuti</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+    <h1>Edit Data Cuti</h1>
 
-<form method="POST" action="{{ route('cuti.update', $cuti->ID_Cuti) }}">
-    @csrf
-    @method('PUT')
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+        </div>
+    @endif
 
-    <label>ID Cuti:</label><br>
-    <input type="text" name="ID_Cuti" value="{{ $cuti->ID_Cuti }}" readonly><br>
+    <form method="POST" action="{{ route('cuti.update', $cuti->ID_Cuti) }}">
+        @csrf
+        @method('PUT')
 
-    <label>Tanggal Mulai:</label><br>
-    <input type="date" name="Tanggal_Mulai" value="{{ $cuti->Tanggal_Mulai }}"><br>
+        <label>ID Cuti:</label><br>
+        <input type="text" name="ID_Cuti" value="{{ $cuti->ID_Cuti }}" readonly><br>
 
-    <label>Tanggal Selesai:</label><br>
-    <input type="date" name="Tanggal_Selesai" value="{{ $cuti->Tanggal_Selesai }}"><br>
+        <label>Tanggal Mulai:</label><br>
+        <input type="date" name="Tanggal_Mulai" value="{{ $cuti->Tanggal_Mulai }}"><br>
 
-    <label>Keterangan Cuti:</label><br>
-    <input type="text" name="Keterangan_Cuti" value="{{ $cuti->Keterangan_Cuti }}"><br>
+        <label>Tanggal Selesai:</label><br>
+        <input type="date" name="Tanggal_Selesai" value="{{ $cuti->Tanggal_Selesai }}"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <label>Keterangan Cuti:</label><br>
+        <input type="text" name="Keterangan_Cuti" value="{{ $cuti->Keterangan_Cuti }}"><br>
 
-<a href="{{ route('cuti.show', $cuti->ID_Cuti) }}">← Kembali ke detail</a>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <a href="{{ route('cuti.show', $cuti->ID_Cuti) }}">← Kembali ke detail</a>
+@endsection

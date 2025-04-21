@@ -1,24 +1,28 @@
-<h1>Tambah HR</h1>
+@extends('layouts.app')
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
+@section('content')
+    <h1>Tambah HR</h1>
 
-<form method="POST" action="{{ route('hr.store') }}">
-    @csrf
+    @if ($errors->any())
+        <div style="color:red;">
+            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+        </div>
+    @endif
 
-    <label>ID HR:</label><br>
-    <input type="text" name="ID_HR"><br>
+    <form method="POST" action="{{ route('hr.store') }}">
+        @csrf
 
-    <label>Nama:</label><br>
-    <input type="text" name="Nama"><br>
+        <label>ID HR:</label><br>
+        <input type="text" name="ID_HR"><br>
 
-    <label>Jabatan:</label><br>
-    <input type="text" name="Jabatan"><br>
+        <label>Nama:</label><br>
+        <input type="text" name="Nama"><br>
 
-    <button type="submit">Simpan</button>
-</form>
+        <label>Jabatan:</label><br>
+        <input type="text" name="Jabatan"><br>
 
-<a href="{{ route('hr.index') }}">← Kembali ke daftar</a>
+        <button type="submit">Simpan</button>
+    </form>
+
+    <a href="{{ route('hr.index') }}">← Kembali ke daftar</a>
+@endsection

@@ -1,12 +1,16 @@
-<h1>Hapus Data Cuti</h1>
+@extends('layouts.app')
 
-<p>Apakah Anda yakin ingin menghapus data cuti dengan ID <strong>{{ $cuti->ID_Cuti }}</strong>?</p>
+@section('content')
+    <h1>Hapus Data Cuti</h1>
 
-<form method="POST" action="{{ route('cuti.destroy', $cuti->ID_Cuti) }}">
-    @csrf
-    @method('DELETE')
+    <p>Apakah Anda yakin ingin menghapus data cuti dengan ID <strong>{{ $cuti->ID_Cuti }}</strong>?</p>
 
-    <button type="submit">🗑️ Hapus</button>
-</form>
+    <form method="POST" action="{{ route('cuti.destroy', $cuti->ID_Cuti) }}">
+        @csrf
+        @method('DELETE')
 
-<a href="{{ route('cuti.index') }}">← Batal</a>
+        <button type="submit">🗑️ Hapus</button>
+    </form>
+
+    <a href="{{ route('cuti.index') }}">← Batal</a>
+@endsection

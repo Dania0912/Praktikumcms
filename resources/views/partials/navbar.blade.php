@@ -1,39 +1,28 @@
-<nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
-  <div class="container-fluid">
-    <!-- Brand -->
-    <a class="navbar-brand" href="{{ route('dashboard') }}">
-      <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" width="30" height="30">
-      <span class="ms-2">Travel Explore</span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm py-3">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
+      <i class="bi bi-box-seam"></i> Travel Explore
     </a>
-
-    <!-- Toggle button for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Navbar links -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <!-- Dashboard -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav gap-2">
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="bx bx-home-alt me-1"></i> Dashboard
-          </a>
+          <a class="nav-link text-white fw-semibold" href="/hr"><i class="bi bi-people-fill me-1"></i>HR</a>
         </li>
-        <!-- Employees -->
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('employees.index') }}">
-            <i class="bx bx-user me-1"></i> Karyawan
-          </a>
+          <a class="nav-link text-white fw-semibold" href="/karyawan"><i class="bi bi-person-badge me-1"></i>Karyawan</a>
         </li>
-        <!-- Logout -->
         <li class="nav-item">
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="btn btn-link nav-link" type="submit">
-              <i class="bx bx-log-out me-1"></i> Logout
-            </button>
-          </form>
+          <a class="nav-link text-white fw-semibold" href="/cuti"><i class="bi bi-calendar-check me-1"></i>Cuti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-semibold" href="/penggajian"><i class="bi bi-cash-stack me-1"></i>Penggajian</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-semibold" href="/jadwalkerja"><i class="bi bi-clock-history me-1"></i>Jadwal Kerja</a>
         </li>
       </ul>
     </div>
