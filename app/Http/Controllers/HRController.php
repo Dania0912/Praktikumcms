@@ -49,8 +49,10 @@ class HRController extends Controller
     {
         $this->seed();
         $hr = collect(self::$hrList)->firstWhere('ID_HR', $id);
-        return view('hr.show', ['hr' => $hr]);
+        return view('HR.show', ['hr' => $hr]);
     }
+    
+    
 
     public function edit($id)
     {

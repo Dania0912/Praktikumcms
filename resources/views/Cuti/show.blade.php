@@ -1,5 +1,6 @@
 @if ($hr)
     <h1>{{ $hr->Nama }}</h1>
+
     <p><strong>ID:</strong> {{ $hr->ID_HR }}</p>
     <p><strong>Jabatan:</strong> {{ $hr->Jabatan }}</p>
 
