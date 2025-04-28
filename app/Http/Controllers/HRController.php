@@ -33,10 +33,12 @@ class HRController extends Controller
     public function store(Request $request)
     {
         $this->seed();
+
+        // Validasi input dari form
         $request->validate([
-            'ID_HR' => 'required',
-            'Nama' => 'required',
-            'Jabatan' => 'required'
+            'ID_HR' => 'required|unique:hr,ID_HR',
+            'Nama' => 'required|max:255',
+            'Jabatan' => 'required|max:255'
         ]);
 
         $hr = new HR($request->ID_HR, $request->Nama, $request->Jabatan);
@@ -49,10 +51,8 @@ class HRController extends Controller
     {
         $this->seed();
         $hr = collect(self::$hrList)->firstWhere('ID_HR', $id);
-        return view('HR.show', ['hr' => $hr]);
+        return view('hr.show', ['hr' => $hr]);
     }
-    
-    
 
     public function edit($id)
     {
@@ -64,12 +64,19 @@ class HRController extends Controller
     public function update(Request $request, $id)
     {
         $this->seed();
+
+        $request->validate([
+            'Nama' => 'required|max:255',
+            'Jabatan' => 'required|max:255'
+        ]);
+
         foreach (self::$hrList as $key => $hr) {
             if ($hr->ID_HR === $id) {
                 self::$hrList[$key]->Nama = $request->Nama;
                 self::$hrList[$key]->Jabatan = $request->Jabatan;
             }
         }
+
         return redirect()->route('hr.index')->with('success', 'HR berhasil diperbarui.');
     }
 

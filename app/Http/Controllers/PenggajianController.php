@@ -22,7 +22,27 @@ class PenggajianController extends Controller
     public function index()
     {
         $this->seed();
-        return view('penggajian.index', ['penggajian' => self::$penggajianList]);
+
+        // Kolom, fields, dan data yang diperlukan untuk ditampilkan di view
+        $pageTitle = 'Penggajian';
+        $createRoute = route('penggajian.create');
+        $columns = ['ID Penggajian', 'Gaji Pokok', 'Potongan', 'Bonus', 'Catatan'];
+        $fields = ['ID_Penggajian', 'Gaji_Pokok', 'Potongan', 'Bonus', 'Catatan'];
+        $data = self::$penggajianList;
+        $showRoute = 'penggajian.show';
+        $editRoute = 'penggajian.edit';
+        $confirmDeleteRoute = 'penggajian.confirmDelete';
+
+        return view('penggajian.index', [
+            'pageTitle' => $pageTitle,
+            'createRoute' => $createRoute,
+            'columns' => $columns,
+            'fields' => $fields,
+            'data' => $data,
+            'showRoute' => $showRoute,
+            'editRoute' => $editRoute,
+            'confirmDeleteRoute' => $confirmDeleteRoute,
+        ]);
     }
 
     public function create()

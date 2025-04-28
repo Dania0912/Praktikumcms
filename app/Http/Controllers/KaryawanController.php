@@ -21,11 +21,32 @@ class KaryawanController extends Controller
         }
     }
 
-    // Menampilkan daftar karyawan
     public function index()
     {
         $this->seed();
-        return view('karyawan.index', ['karyawans' => self::$karyawanList]);
+        
+        // Data yang akan dikirim ke view
+        $pageTitle = 'Karyawan';  // Set the page title
+        $createRoute = route('karyawan.create');  // Define the route for creating a new Karyawan
+        $columns = ['ID Karyawan', 'Nama', 'Tanggal Lahir', 'Alamat', 'Jabatan', 'Riwayat Pekerjaan'];  // Definisikan kolom
+        $fields = ['ID_Karyawan', 'Nama', 'Tanggal_Lahir', 'Alamat', 'Jabatan', 'Riwayat_Pekerjaan'];  // Definisikan field yang sesuai
+        $data = self::$karyawanList;  // Daftar data karyawan yang akan ditampilkan
+        $showRoute = 'karyawan.show';  // Route untuk melihat detail karyawan
+        $editRoute = 'karyawan.edit';  // Route untuk mengedit karyawan
+        $confirmDeleteRoute = 'karyawan.confirmDelete';  // Route untuk mengkonfirmasi penghapusan karyawan
+
+        // Mengirim data ke view
+        return view('karyawan.index', [
+            'karyawans' => self::$karyawanList,
+            'pageTitle' => $pageTitle,
+            'createRoute' => $createRoute,
+            'columns' => $columns,
+            'fields' => $fields,
+            'data' => $data,
+            'showRoute' => $showRoute,
+            'editRoute' => $editRoute,
+            'confirmDeleteRoute' => $confirmDeleteRoute
+        ]);
     }
 
     // Menampilkan form tambah karyawan

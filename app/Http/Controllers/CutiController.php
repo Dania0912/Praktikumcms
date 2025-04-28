@@ -22,7 +22,27 @@ class CutiController extends Controller
     public function index()
     {
         $this->seed();
-        return view('cuti.index', ['cuti' => self::$cutiList]);
+
+        // Kolom, fields, dan data yang diperlukan untuk ditampilkan di view
+        $pageTitle = 'Cuti';
+        $createRoute = route('cuti.create');
+        $columns = ['ID Cuti', 'Tanggal Mulai', 'Tanggal Selesai', 'Keterangan Cuti'];
+        $fields = ['ID_Cuti', 'Tanggal_Mulai', 'Tanggal_Selesai', 'Keterangan_Cuti'];
+        $data = self::$cutiList;
+        $showRoute = 'cuti.show';
+        $editRoute = 'cuti.edit';
+        $confirmDeleteRoute = 'cuti.confirmDelete';
+
+        return view('cuti.index', [
+            'pageTitle' => $pageTitle,
+            'createRoute' => $createRoute,
+            'columns' => $columns,
+            'fields' => $fields,
+            'data' => $data,
+            'showRoute' => $showRoute,
+            'editRoute' => $editRoute,
+            'confirmDeleteRoute' => $confirmDeleteRoute,
+        ]);
     }
 
     public function create()
@@ -76,6 +96,7 @@ class CutiController extends Controller
                 self::$cutiList[$key]->Keterangan_Cuti = $request->Keterangan_Cuti;
             }
         }
+
         return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil diperbarui.');
     }
 

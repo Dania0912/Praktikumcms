@@ -22,7 +22,27 @@ class JadwalKerjaController extends Controller
     public function index()
     {
         $this->seed();
-        return view('jadwalkerja.index', ['jadwalKerja' => self::$jadwalKerjaList]);
+
+        // Kolom, fields, dan data yang diperlukan untuk ditampilkan di view
+        $pageTitle = 'Jadwal Kerja';
+        $createRoute = route('jadwalkerja.create');
+        $columns = ['ID Jadwal', 'Tanggal Mulai', 'Tanggal Selesai', 'Waktu Mulai', 'Waktu Selesai'];
+        $fields = ['ID_Jadwal', 'Tanggal_Mulai', 'Tanggal_Selesai', 'Waktu_Mulai', 'Waktu_Selesai'];
+        $data = self::$jadwalKerjaList;
+        $showRoute = 'jadwalkerja.show';
+        $editRoute = 'jadwalkerja.edit';
+        $confirmDeleteRoute = 'jadwalkerja.confirmDelete';
+
+        return view('jadwalkerja.index', [
+            'pageTitle' => $pageTitle,
+            'createRoute' => $createRoute,
+            'columns' => $columns,
+            'fields' => $fields,
+            'data' => $data,
+            'showRoute' => $showRoute,
+            'editRoute' => $editRoute,
+            'confirmDeleteRoute' => $confirmDeleteRoute,
+        ]);
     }
 
     public function create()
@@ -79,6 +99,7 @@ class JadwalKerjaController extends Controller
                 self::$jadwalKerjaList[$key]->Waktu_Selesai = $request->Waktu_Selesai;
             }
         }
+
         return redirect()->route('jadwalkerja.index')->with('success', 'Jadwal kerja berhasil diperbarui.');
     }
 
