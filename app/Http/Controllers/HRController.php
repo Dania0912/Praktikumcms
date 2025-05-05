@@ -7,93 +7,81 @@ use App\Models\HR;
 
 class HRController extends Controller
 {
-    protected static $hrList = [];
-
-    private function seed()
-    {
-        if (empty(self::$hrList)) {
-            self::$hrList = [
-                new HR('HR01', 'Dania', 'Manager'),
-                new HR('HR02', 'Budi', 'Staff')
-            ];
-        }
-    }
-
+    // Menampilkan daftar semua 
     public function index()
     {
-        $this->seed();
-        return view('hr.index', ['hr' => self::$hrList]);
+        return view('hr.index', [
+            'hr' => HR::all()
+        ]);
     }
 
+    // Menampilkan form tambah 
     public function create()
     {
         return view('hr.create');
     }
 
+    // Menyimpan data 
     public function store(Request $request)
     {
-        $this->seed();
-
-        // Validasi input dari form
         $request->validate([
-            'ID_HR' => 'required|unique:hr,ID_HR',
-            'Nama' => 'required|max:255',
-            'Jabatan' => 'required|max:255'
+            'nama' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
         ]);
 
-        $hr = new HR($request->ID_HR, $request->Nama, $request->Jabatan);
-        self::$hrList[] = $hr;
+        HR::create([
+            'nama' => $request->input('nama'),
+            'jabatan' => $request->input('jabatan'),
+        ]);
 
-        return redirect()->route('hr.index')->with('success', 'HR berhasil ditambahkan.');
+        return redirect()->route('hr.index');
     }
 
+    // Menampilkan detail 
     public function show($id)
     {
-        $this->seed();
-        $hr = collect(self::$hrList)->firstWhere('ID_HR', $id);
-        return view('hr.show', ['hr' => $hr]);
+        $hr = HR::findOrFail($id);
+        return view('hr.show', compact('hr'));
     }
 
+    // Menampilkan form edit 
     public function edit($id)
     {
-        $this->seed();
-        $hr = collect(self::$hrList)->firstWhere('ID_HR', $id);
-        return view('hr.edit', ['hr' => $hr]);
+        $hr = HR::findOrFail($id);
+        return view('hr.edit', compact('hr'));
     }
 
+    // Memproses update data 
     public function update(Request $request, $id)
     {
-        $this->seed();
-
         $request->validate([
-            'Nama' => 'required|max:255',
-            'Jabatan' => 'required|max:255'
+            'nama' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
         ]);
 
-        foreach (self::$hrList as $key => $hr) {
-            if ($hr->ID_HR === $id) {
-                self::$hrList[$key]->Nama = $request->Nama;
-                self::$hrList[$key]->Jabatan = $request->Jabatan;
-            }
-        }
+        $hr = HR::findOrFail($id);
 
-        return redirect()->route('hr.index')->with('success', 'HR berhasil diperbarui.');
+        $hr->update([
+            'nama' => $request->input('nama'),
+            'jabatan' => $request->input('jabatan'),
+        ]);
+
+        return redirect()->route('hr.show', $id);
     }
 
-    public function confirmDelete($id)
+    // Menampilkan halaman konfirmasi hapus
+    public function delete($id)
     {
-        $this->seed();
-        $hr = collect(self::$hrList)->firstWhere('ID_HR', $id);
-        return view('hr.delete', ['hr' => $hr]);
+        $hr = HR::findOrFail($id);
+        return view('hr.delete', compact('hr'));
     }
 
+    // Menghapus data 
     public function destroy($id)
     {
-        $this->seed();
-        self::$hrList = array_filter(self::$hrList, function ($hr) use ($id) {
-            return $hr->ID_HR !== $id;
-        });
+        $hr = Karyawan::findOrFail($id);
+        $hr->delete();
 
-        return redirect()->route('hr.index')->with('success', 'HR berhasil dihapus.');
+        return redirect()->route('hr.index');
     }
 }

@@ -1,16 +1,18 @@
 @extends('layouts.app')
 
+@section('title', 'Konfirmasi Hapus')
+
 @section('content')
-    <h1>Hapus Jadwal Kerja</h1>
+    <h1>Yakin ingin menghapus jadwal kerja ini?</h1>
 
-    <p>Apakah Anda yakin ingin menghapus jadwal dengan ID <strong>{{ $jadwalKerja->ID_Jadwal }}</strong>?</p>
+    <p><strong>ID Jadwal: {{ $jadwalKerja->id_jadwal }}</strong></p>
+    <p>Tanggal: {{ $jadwalKerja->tanggal_mulai }} s/d {{ $jadwalKerja->tanggal_selesai }}</p>
 
-    <form method="POST" action="{{ route('jadwalkerja.destroy', $jadwalKerja->ID_Jadwal) }}">
+    <form action="{{ route('jadwalkerja.destroy', $jadwalKerja->id_jadwal) }}" method="POST" style="display: inline;">
         @csrf
         @method('DELETE')
-
-        <button type="submit">🗑️ Hapus</button>
+        <button style="margin-right: 10px;">Ya, hapus</button>
     </form>
 
-    <a href="{{ route('jadwalkerja.index') }}">← Batal</a>
+    <a href="{{ route('jadwalkerja.show', $jadwalKerja->id_jadwal) }}">Batal</a>
 @endsection

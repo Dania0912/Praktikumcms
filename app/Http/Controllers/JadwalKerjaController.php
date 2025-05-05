@@ -7,116 +7,91 @@ use App\Models\JadwalKerja;
 
 class JadwalKerjaController extends Controller
 {
-    protected static $jadwalKerjaList = [];
-
-    private function seed()
-    {
-        if (empty(self::$jadwalKerjaList)) {
-            self::$jadwalKerjaList = [
-                new JadwalKerja('J01', '2025-05-01', '2025-05-01', '08:00', '17:00'),
-                new JadwalKerja('J02', '2025-05-02', '2025-05-02', '09:00', '18:00')
-            ];
-        }
-    }
-
+    // Menampilkan daftar semua 
     public function index()
     {
-        $this->seed();
-
-        // Kolom, fields, dan data yang diperlukan untuk ditampilkan di view
-        $pageTitle = 'Jadwal Kerja';
-        $createRoute = route('jadwalkerja.create');
-        $columns = ['ID Jadwal', 'Tanggal Mulai', 'Tanggal Selesai', 'Waktu Mulai', 'Waktu Selesai'];
-        $fields = ['ID_Jadwal', 'Tanggal_Mulai', 'Tanggal_Selesai', 'Waktu_Mulai', 'Waktu_Selesai'];
-        $data = self::$jadwalKerjaList;
-        $showRoute = 'jadwalkerja.show';
-        $editRoute = 'jadwalkerja.edit';
-        $confirmDeleteRoute = 'jadwalkerja.confirmDelete';
-
         return view('jadwalkerja.index', [
-            'pageTitle' => $pageTitle,
-            'createRoute' => $createRoute,
-            'columns' => $columns,
-            'fields' => $fields,
-            'data' => $data,
-            'showRoute' => $showRoute,
-            'editRoute' => $editRoute,
-            'confirmDeleteRoute' => $confirmDeleteRoute,
+            'jadwalkerja' => JadwalKerja::all()
         ]);
     }
 
+    // Menampilkan form tambah 
     public function create()
     {
         return view('jadwalkerja.create');
     }
 
+    // Menyimpan data 
     public function store(Request $request)
     {
-        $this->seed();
         $request->validate([
-            'ID_Jadwal' => 'required',
-            'Tanggal_Mulai' => 'required|date',
-            'Tanggal_Selesai' => 'required|date',
-            'Waktu_Mulai' => 'required',
-            'Waktu_Selesai' => 'required'
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_selesai' => 'required|date_format:H:i',
         ]);
 
-        $jadwal = new JadwalKerja(
-            $request->ID_Jadwal,
-            $request->Tanggal_Mulai,
-            $request->Tanggal_Selesai,
-            $request->Waktu_Mulai,
-            $request->Waktu_Selesai
-        );
+        JadwalKerja::create([
+            'tanggal_mulai' => $request->input('tanggal_mulai'),
+            'tanggal_selesai' => $request->input('tanggal_selesai'),
+            'waktu_mulai' => $request->input('waktu_mulai'),
+            'waktu_selesai' => $request->input('waktu_selesai'),
 
-        self::$jadwalKerjaList[] = $jadwal;
-
-        return redirect()->route('jadwalkerja.index')->with('success', 'Jadwal kerja berhasil ditambahkan.');
+        ]);
+ 
+        return redirect()->route('jadwalkerja.index');
     }
 
+    // Menampilkan detail 
     public function show($id)
     {
-        $this->seed();
-        $jadwal = collect(self::$jadwalKerjaList)->firstWhere('ID_Jadwal', $id);
-        return view('jadwalkerja.show', ['jadwalKerja' => $jadwal]);
+        $jadwalkerja = JadwalKerja::findOrFail($id);
+        return view('jadwalkerja.show', compact('jadwalkerja'));
     }
 
+    // Menampilkan form edit karyawan
     public function edit($id)
     {
-        $this->seed();
-        $jadwal = collect(self::$jadwalKerjaList)->firstWhere('ID_Jadwal', $id);
-        return view('jadwalkerja.edit', ['jadwalKerja' => $jadwal]);
+        $jadwalkerja = JadwalKerja::findOrFail($id);
+        return view('jadwalkerja.edit', compact('jadwalkerja'));
     }
 
+    // Memproses update data karyawan
     public function update(Request $request, $id)
     {
-        $this->seed();
-        foreach (self::$jadwalKerjaList as $key => $jadwal) {
-            if ($jadwal->ID_Jadwal === $id) {
-                self::$jadwalKerjaList[$key]->Tanggal_Mulai = $request->Tanggal_Mulai;
-                self::$jadwalKerjaList[$key]->Tanggal_Selesai = $request->Tanggal_Selesai;
-                self::$jadwalKerjaList[$key]->Waktu_Mulai = $request->Waktu_Mulai;
-                self::$jadwalKerjaList[$key]->Waktu_Selesai = $request->Waktu_Selesai;
-            }
-        }
+        $request->validate([
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_selesai' => 'required|date_format:H:i',
+        ]);
 
-        return redirect()->route('jadwalkerja.index')->with('success', 'Jadwal kerja berhasil diperbarui.');
+        $jadwalkerja = JadwalKerja::findOrFail($id);
+
+        $jadwalkerja->update([
+            'nama' => $request->input('nama'),
+            'tanggal_lahir' => $request->input('tanggal_lahir'),
+            'alamat' => $request->input('alamat'),
+            'jabatan' => $request->input('jabatan'),
+            'riwayat_pekerjaan' => $request->input('riwayat_pekerjaan'),
+        ]);
+
+        return redirect()->route('jadwalkerja.show', $id);
     }
 
-    public function confirmDelete($id)
+    // Menampilkan halaman konfirmasi hapus
+    public function delete($id)
     {
-        $this->seed();
-        $jadwal = collect(self::$jadwalKerjaList)->firstWhere('ID_Jadwal', $id);
-        return view('jadwalkerja.delete', ['jadwalKerja' => $jadwal]);
+        $jadwalkerja = JadwalKerja::findOrFail($id);
+        return view('jadwalkerja.delete', compact('jadwalkerja'));
     }
 
+    // Menghapus data 
     public function destroy($id)
     {
-        $this->seed();
-        self::$jadwalKerjaList = array_filter(self::$jadwalKerjaList, function ($jadwal) use ($id) {
-            return $jadwal->ID_Jadwal !== $id;
-        });
+        $jadwalkerja = JadwalKerja::findOrFail($id);
+        $jadwalkerja->delete();
 
-        return redirect()->route('jadwalkerja.index')->with('success', 'Jadwal kerja berhasil dihapus.');
+        return redirect()->route('jadwalkerja.index');
     }
 }

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Penggajian')
+
 @section('content')
     <h1>Edit Penggajian</h1>
 
@@ -9,27 +11,25 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('penggajian.update', $penggajian->ID_Penggajian) }}">
+    <form method="POST" action="{{ route('penggajian.update', $penggajian->id) }}">
         @csrf
         @method('PUT')
 
-        <label>ID Penggajian:</label><br>
-        <input type="text" name="ID_Penggajian" value="{{ $penggajian->ID_Penggajian }}" readonly><br>
-
         <label>Gaji Pokok:</label><br>
-        <input type="text" name="Gaji_Pokok" value="{{ $penggajian->Gaji_Pokok }}"><br>
+        <input type="number" name="gaji_pokok" value="{{ $penggajian->gaji_pokok }}" required><br><br>
 
         <label>Potongan:</label><br>
-        <input type="text" name="Potongan" value="{{ $penggajian->Potongan }}"><br>
+        <input type="number" name="potongan" value="{{ $penggajian->potongan }}"><br><br>
 
         <label>Bonus:</label><br>
-        <input type="text" name="Bonus" value="{{ $penggajian->Bonus }}"><br>
+        <input type="number" name="bonus" value="{{ $penggajian->bonus }}"><br><br>
 
         <label>Catatan:</label><br>
-        <textarea name="Catatan">{{ $penggajian->Catatan }}</textarea><br>
+        <textarea name="catatan">{{ $penggajian->catatan }}</textarea><br><br>
 
-        <button type="submit">Simpan</button>
+        <button style="margin-top: 10px;">Simpan</button>
     </form>
 
-    <a href="{{ route('penggajian.show', $penggajian->ID_Penggajian) }}">← Kembali ke detail</a>
+    <br>
+    <a href="{{ route('penggajian.show', $penggajian->id) }}">← Kembali ke detail</a>
 @endsection

@@ -1,14 +1,20 @@
 @extends('layouts.app')
 
+@section('title', 'Detail Cuti')
+
 @section('content')
-    <h1>Detail Cuti</h1>
+    <h2>Detail Cuti</h2>
 
-    <p><strong>ID Cuti:</strong> {{ $cuti->ID_Cuti }}</p>
-    <p><strong>Tanggal Mulai:</strong> {{ $cuti->Tanggal_Mulai }}</p>
-    <p><strong>Tanggal Selesai:</strong> {{ $cuti->Tanggal_Selesai }}</p>
-    <p><strong>Keterangan:</strong> {{ $cuti->Keterangan_Cuti }}</p>
+    <p><strong>Tanggal Mulai:</strong> {{ $cuti->tanggal_mulai }}</p>
+    <p><strong>Tanggal Selesai:</strong> {{ $cuti->tanggal_selesai }}</p>
+    <p><strong>Keterangan Cuti:</strong> {{ $cuti->keterangan_cuti }}</p>
 
-    <a href="{{ route('cuti.edit', $cuti->ID_Cuti) }}">✏️ Edit</a> |
-    <a href="{{ route('cuti.confirmDelete', $cuti->ID_Cuti) }}">🗑️ Hapus</a><br>
+    <br>
+
+    <a href="{{ route('cuti.edit', $cuti->id) }}">✏️ Edit</a> |
+    <a href="{{ route('cuti.delete', $cuti->id) }}">🗑️ Hapus</a>
+
+    <br><br>
+
     <a href="{{ route('cuti.index') }}">← Kembali ke daftar</a>
 @endsection

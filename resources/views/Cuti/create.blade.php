@@ -1,31 +1,26 @@
 @extends('layouts.app')
 
+@section('title', 'Tambah Cuti')
+
 @section('content')
-    <h1>Tambah Data Cuti</h1>
+    <h2 style="margin-bottom: 16px;">Tambah Cuti Baru</h2>
 
-    @if ($errors->any())
-        <div style="color:red;">
-            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('cuti.store') }}">
+    <form method="POST" action="{{ route('cuti.store') }}" style="line-height: 2;">
         @csrf
+        <label>Tanggal Mulai: 
+            <input type="date" name="tanggal_mulai" required>
+        </label><br>
 
-        <label>ID Cuti:</label><br>
-        <input type="text" name="ID_Cuti"><br>
+        <label>Tanggal Selesai: 
+            <input type="date" name="tanggal_selesai" required>
+        </label><br>
 
-        <label>Tanggal Mulai:</label><br>
-        <input type="date" name="Tanggal_Mulai"><br>
+        <label>Keterangan Cuti: 
+            <input type="text" name="keterangan_cuti" required>
+        </label><br>
 
-        <label>Tanggal Selesai:</label><br>
-        <input type="date" name="Tanggal_Selesai"><br>
-
-        <label>Keterangan Cuti:</label><br>
-        <input type="text" name="Keterangan_Cuti"><br>
-
-        <button type="submit">Simpan</button>
+        <button type="submit" style="margin-top: 10px;">Tambah</button>
     </form>
 
-    <a href="{{ route('cuti.index') }}">← Kembali</a>
+    <a href="{{ route('cuti.index') }}" style="display: inline-block; margin-top: 20px;">← Kembali ke daftar</a>
 @endsection

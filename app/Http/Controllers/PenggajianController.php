@@ -7,116 +7,95 @@ use App\Models\Penggajian;
 
 class PenggajianController extends Controller
 {
-    protected static $penggajianList = [];
-
-    private function seed()
-    {
-        if (empty(self::$penggajianList)) {
-            self::$penggajianList = [
-                new Penggajian('PGJ001', 5000000, 500000, 200000, 'Gaji bulan April'),
-                new Penggajian('PGJ002', 4500000, 300000, 150000, 'Gaji bulan April dengan bonus')
-            ];
-        }
-    }
-
+    // Menampilkan daftar semua karyawan
     public function index()
     {
-        $this->seed();
-
-        // Kolom, fields, dan data yang diperlukan untuk ditampilkan di view
-        $pageTitle = 'Penggajian';
-        $createRoute = route('penggajian.create');
-        $columns = ['ID Penggajian', 'Gaji Pokok', 'Potongan', 'Bonus', 'Catatan'];
-        $fields = ['ID_Penggajian', 'Gaji_Pokok', 'Potongan', 'Bonus', 'Catatan'];
-        $data = self::$penggajianList;
-        $showRoute = 'penggajian.show';
-        $editRoute = 'penggajian.edit';
-        $confirmDeleteRoute = 'penggajian.confirmDelete';
-
         return view('penggajian.index', [
-            'pageTitle' => $pageTitle,
-            'createRoute' => $createRoute,
-            'columns' => $columns,
-            'fields' => $fields,
-            'data' => $data,
-            'showRoute' => $showRoute,
-            'editRoute' => $editRoute,
-            'confirmDeleteRoute' => $confirmDeleteRoute,
+            'penggajian' => Penggajian::all()
         ]);
     }
 
+
+    // Menampilkan form tambah karyawan
     public function create()
     {
         return view('penggajian.create');
     }
 
+    // Menyimpan data karyawan baru
     public function store(Request $request)
     {
-        $this->seed();
         $request->validate([
-            'ID_Penggajian' => 'required',
-            'Gaji_Pokok' => 'required|numeric',
-            'Potongan' => 'required|numeric',
-            'Bonus' => 'required|numeric',
-            'Catatan' => 'required'
+            'gaji_pokok' => 'required|numeric',
+            'potongan' => 'required|numeric',
+            'bonus' => 'required|numeric',
+            'catatan' => 'required|string|max:255',
         ]);
 
-        $penggajian = new Penggajian(
-            $request->ID_Penggajian,
-            $request->Gaji_Pokok,
-            $request->Potongan,
-            $request->Bonus,
-            $request->Catatan
-        );
+        Penggajian::create([
+            'gaji_pokok' => $request->input('gaji_pokok'),
+            'potongan' => $request->input('potongan'),
+            'bonus' => $request->input('bonus'),
+            'catatan' => $request->input('catatan'),
+        ]);
 
-        self::$penggajianList[] = $penggajian;
-
-        return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil ditambahkan.');
+        return redirect()->route('penggajian.index');
     }
 
+    // Menampilkan detail
     public function show($id)
-    {
-        $this->seed();
-        $penggajian = collect(self::$penggajianList)->firstWhere('ID_Penggajian', $id);
-        return view('penggajian.show', ['penggajian' => $penggajian]);
+{
+    $penggajian = Penggajian::find($id);
+    if (!$penggajian) {
+        return redirect()->route('penggajian.index')->with('error', 'Data Penggajian tidak ditemukan.');
     }
 
+    return view('penggajian.show', compact('penggajian'));
+}
+
+
+    // Menampilkan form edit 
     public function edit($id)
     {
-        $this->seed();
-        $penggajian = collect(self::$penggajianList)->firstWhere('ID_Penggajian', $id);
-        return view('penggajian.edit', ['penggajian' => $penggajian]);
+        $penggajian = Penggajian::findOrFail($id);
+        return view('penggajian.edit', compact('penggajian'));
     }
 
+    // Memproses update data karyawan
     public function update(Request $request, $id)
     {
-        $this->seed();
-        foreach (self::$penggajianList as $key => $penggajian) {
-            if ($penggajian->ID_Penggajian === $id) {
-                self::$penggajianList[$key]->Gaji_Pokok = $request->Gaji_Pokok;
-                self::$penggajianList[$key]->Potongan = $request->Potongan;
-                self::$penggajianList[$key]->Bonus = $request->Bonus;
-                self::$penggajianList[$key]->Catatan = $request->Catatan;
-            }
-        }
+        $request->validate([
+            'gaji_pokok' => 'required|numeric',
+            'potongan' => 'required|numeric',
+            'bonus' => 'required|numeric',
+            'catatan' => 'required|string|max:255',
+        ]);
 
-        return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil diperbarui.');
+        $penggajian = Penggajian::findOrFail($id);
+
+        $penggajian->update([
+            'gaji_pokok' => $request->input('gaji_pokok'),
+            'potongan' => $request->input('potongan'),
+            'bonus' => $request->input('bonus'),
+            'catatan' => $request->input('catatan'),
+        ]);
+
+        return redirect()->route('penggajian.show', $id);
     }
 
-    public function confirmDelete($id)
+    // Menampilkan halaman konfirmasi hapus
+    public function delete($id)
     {
-        $this->seed();
-        $penggajian = collect(self::$penggajianList)->firstWhere('ID_Penggajian', $id);
-        return view('penggajian.delete', ['penggajian' => $penggajian]);
+        $penggajian = Penggajian::findOrFail($id);
+        return view('penggajian.delete', compact('penggajian'));
     }
 
+    // Menghapus data 
     public function destroy($id)
     {
-        $this->seed();
-        self::$penggajianList = array_filter(self::$penggajianList, function ($penggajian) use ($id) {
-            return $penggajian->ID_Penggajian !== $id;
-        });
+        $penggajian = Penggajian::findOrFail($id);
+        $penggajian->delete();
 
-        return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil dihapus.');
+        return redirect()->route('penggajian.index');
     }
 }

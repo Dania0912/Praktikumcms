@@ -1,21 +1,18 @@
-@extends('layouts.app') <!-- Menggunakan layout app -->
+@extends('layouts.app')
+
+@section('title', 'Konfirmasi Hapus')
 
 @section('content')
-<div class="container mt-5">
-    <h1>Hapus Karyawan</h1>
+    <h1>Yakin ingin menghapus karyawan ini?</h1>
 
-    <p>Apakah Anda yakin ingin menghapus <strong>{{ $karyawan->Nama }}</strong>?</p>
+    <p><strong>{{ $karyawan->nama }}</strong></p>
+    <p>{{ $karyawan->email }}</p>
 
-    <!-- Form untuk menghapus data karyawan -->
-    <form method="POST" action="{{ route('karyawan.destroy', $karyawan->ID_Karyawan) }}">
+    <form action="{{ route('karyawan.destroy', $karyawan->id) }}" method="POST" style="display: inline;">
         @csrf
         @method('DELETE')
-
-        <!-- Tombol untuk menghapus -->
-        <button type="submit" class="btn btn-danger">🗑️ Hapus</button>
+        <button style="margin-right: 10px;">Ya, hapus</button>
     </form>
 
-    <!-- Link untuk membatalkan dan kembali ke daftar -->
-    <a href="{{ route('karyawan.index') }}" class="btn btn-secondary mt-3">← Batal</a>
-</div>
+    <a href="{{ route('karyawan.show', $karyawan->id) }}">Batal</a>
 @endsection

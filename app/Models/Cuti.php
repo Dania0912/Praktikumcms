@@ -1,19 +1,29 @@
 <?php
-
 namespace App\Models;
 
-class Cuti
-{
-    public $ID_Cuti;
-    public $Tanggal_Mulai;
-    public $Tanggal_Selesai;
-    public $Keterangan_Cuti;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-    public function __construct($ID_Cuti, $Tanggal_Mulai, $Tanggal_Selesai, $Keterangan_Cuti)
+class Cuti extends Model
+{
+    use HasFactory;
+
+    protected $table = 'cuti'; // Menyesuaikan dengan nama tabel yang benar
+    protected $fillable = ['tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti'];
+
+    protected $primaryKey = 'id'; // Menyertakan primary key
+    public $incrementing = false; // Menyesuaikan dengan tipe data primary key
+    protected $keyType = 'string'; // Jika id menggunakan tipe data string
+
+    // Method untuk mendapatkan semua data cuti
+    public static function getAll()
     {
-        $this->ID_Cuti = $ID_Cuti;
-        $this->Tanggal_Mulai = $Tanggal_Mulai;
-        $this->Tanggal_Selesai = $Tanggal_Selesai;
-        $this->Keterangan_Cuti = $Keterangan_Cuti;
+        return Cuti::all();
+    }
+
+    // Method untuk mencari cuti berdasarkan id
+    public static function find($id)
+    {
+        return Cuti::where('id', $id)->first();
     }
 }

@@ -2,16 +2,28 @@
 
 namespace App\Models;
 
-class HR
-{
-    public $ID_HR;
-    public $Nama;
-    public $Jabatan;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-    public function __construct($id, $nama, $jabatan)
+class HR extends Model
+{
+    use HasFactory;
+
+    protected $table = 'hr'; 
+    protected $fillable = ['nama', 'jabatan'];
+
+    protected $primaryKey = 'id'; 
+
+    public $incrementing = false; 
+    protected $keyType = 'string';
+
+    public static function getAll()
     {
-        $this->ID_HR = $id;
-        $this->Nama = $nama;
-        $this->Jabatan = $jabatan;
+        return HR::all();
+    }
+
+    public static function find($id)
+    {
+        return HR::where('id', $id)->first();
     }
 }

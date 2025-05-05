@@ -1,32 +1,26 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Cuti')
+
 @section('content')
-    <h1>Edit Data Cuti</h1>
+    <h1>Edit Cuti</h1>
 
-    @if ($errors->any())
-        <div style="color:red;">
-            <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('cuti.update', $cuti->ID_Cuti) }}">
+    <form method="POST" action="{{ route('cuti.update', $cuti->id) }}">
         @csrf
         @method('PUT')
 
-        <label>ID Cuti:</label><br>
-        <input type="text" name="ID_Cuti" value="{{ $cuti->ID_Cuti }}" readonly><br>
-
         <label>Tanggal Mulai:</label><br>
-        <input type="date" name="Tanggal_Mulai" value="{{ $cuti->Tanggal_Mulai }}"><br>
+        <input type="date" name="tanggal_mulai" value="{{ $cuti->tanggal_mulai }}"><br><br>
 
         <label>Tanggal Selesai:</label><br>
-        <input type="date" name="Tanggal_Selesai" value="{{ $cuti->Tanggal_Selesai }}"><br>
+        <input type="date" name="tanggal_selesai" value="{{ $cuti->tanggal_selesai }}"><br><br>
 
         <label>Keterangan Cuti:</label><br>
-        <input type="text" name="Keterangan_Cuti" value="{{ $cuti->Keterangan_Cuti }}"><br>
+        <input type="text" name="keterangan_cuti" value="{{ $cuti->keterangan_cuti }}"><br><br>
 
-        <button type="submit">Simpan</button>
+        <button style="margin-top: 10px;">Simpan</button>
     </form>
 
-    <a href="{{ route('cuti.show', $cuti->ID_Cuti) }}">← Kembali ke detail</a>
+    <br>
+    <a href="{{ route('cuti.show', $cuti->id) }}">← Kembali ke detail</a>
 @endsection

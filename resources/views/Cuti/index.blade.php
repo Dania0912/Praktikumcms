@@ -1,45 +1,32 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">{{ $pageTitle }}</h2>
-    <a href="{{ $createRoute }}" class="btn btn-primary">
-        <i class="bi bi-plus-circle me-1"></i> Tambah {{ $pageTitle }}
-    </a>
-</div>
+@section('title', 'Daftar Cuti')
 
-<div class="card shadow-sm border-0">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        @foreach($columns as $col)
-                            <th>{{ $col }}</th>
-                        @endforeach
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($data as $item)
-                        <tr>
-                            @foreach($fields as $field)
-                                <td>{{ $item->$field }}</td>
-                            @endforeach
-                            <td>
-                                <a href="{{ route($showRoute, $item->ID_Cuti) }}" class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i></a>
-                                <a href="{{ route($editRoute, $item->ID_Cuti) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                <a href="{{ route($confirmDeleteRoute, $item->ID_Cuti) }}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="{{ count($columns)+1 }}" class="text-center text-muted">Belum ada data</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+@section('content')
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Daftar Cuti</h2>
+        <a href="{{ route('cuti.create') }}" class="btn btn-success">
+            <i class="bi bi-calendar-plus me-1"></i> Tambah Cuti
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <ul class="list-group">
+                @forelse($cuti as $c)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{{ route('cuti.show', $c->id) }}" class="text-decoration-none">
+                            {{ $c->keterangan_cuti }} ({{ $c->tanggal_mulai }} s/d {{ $c->tanggal_selesai }})
+                        </a>
+                        <div>
+                            <a href="{{ route('cuti.edit', $c->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('cuti.show', $c->id) }}" class="btn btn-info btn-sm">Detail</a>
+                        </div>
+                    </li>
+                @empty
+                    <li class="list-group-item text-center text-muted">Tidak ada data cuti.</li>
+                @endforelse
+            </ul>
         </div>
     </div>
-</div>
 @endsection

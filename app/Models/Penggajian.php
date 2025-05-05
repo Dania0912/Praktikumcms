@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-class Penggajian
-{
-    public $ID_Penggajian;
-    public $Gaji_Pokok;
-    public $Potongan;
-    public $Bonus;
-    public $Catatan;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-    public function __construct($ID_Penggajian, $Gaji_Pokok, $Potongan, $Bonus, $Catatan)
-    {
-        $this->ID_Penggajian = $ID_Penggajian;
-        $this->Gaji_Pokok = $Gaji_Pokok;
-        $this->Potongan = $Potongan;
-        $this->Bonus = $Bonus;
-        $this->Catatan = $Catatan;
-    }
+class Penggajian extends Model
+{
+    use HasFactory;
+
+    // Menentukan nama tabel sesuai dengan yang ada di database
+    protected $table = 'PENGGAJIAN';  // Pastikan ini sesuai dengan nama tabel di database
+
+    // Menentukan kolom yang bisa diisi (mass assignable)
+    protected $fillable = [
+        'gaji_pokok',
+        'potongan',
+        'bonus',
+        'catatan',
+    ];
 }

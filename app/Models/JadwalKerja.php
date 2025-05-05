@@ -2,20 +2,28 @@
 
 namespace App\Models;
 
-class JadwalKerja
-{
-    public $ID_Jadwal;
-    public $Tanggal_Mulai;
-    public $Tanggal_Selesai;
-    public $Waktu_Mulai;
-    public $Waktu_Selesai;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-    public function __construct($id, $tanggalMulai, $tanggalSelesai, $waktuMulai, $waktuSelesai)
+class JadwalKerja extends Model
+{
+    use HasFactory;
+
+    protected $table = 'jadwalkerja'; 
+    protected $fillable = ['tanggal_mulai', 'tanggal_selesai', 'waktu_mulai', 'waktu_selesai'];
+
+    protected $primaryKey = 'id'; 
+
+    public $incrementing = false; 
+    protected $keyType = 'string';
+
+    public static function getAll()
     {
-        $this->ID_Jadwal = $id;
-        $this->Tanggal_Mulai = $tanggalMulai;
-        $this->Tanggal_Selesai = $tanggalSelesai;
-        $this->Waktu_Mulai = $waktuMulai;
-        $this->Waktu_Selesai = $waktuSelesai;
+        return JadwalKerja::all();
+    }
+
+    public static function find($id)
+    {
+        return JadwalKerja::where('id', $id)->first();
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,113 +6,84 @@ use App\Models\Cuti;
 
 class CutiController extends Controller
 {
-    protected static $cutiList = [];
-
-    private function seed()
-    {
-        if (empty(self::$cutiList)) {
-            self::$cutiList = [
-                new Cuti('C001', '2025-04-01', '2025-04-05', 'Cuti Tahunan'),
-                new Cuti('C002', '2025-04-10', '2025-04-12', 'Cuti Sakit')
-            ];
-        }
-    }
-
+    // Menampilkan daftar semua cuti
     public function index()
     {
-        $this->seed();
-
-        // Kolom, fields, dan data yang diperlukan untuk ditampilkan di view
-        $pageTitle = 'Cuti';
-        $createRoute = route('cuti.create');
-        $columns = ['ID Cuti', 'Tanggal Mulai', 'Tanggal Selesai', 'Keterangan Cuti'];
-        $fields = ['ID_Cuti', 'Tanggal_Mulai', 'Tanggal_Selesai', 'Keterangan_Cuti'];
-        $data = self::$cutiList;
-        $showRoute = 'cuti.show';
-        $editRoute = 'cuti.edit';
-        $confirmDeleteRoute = 'cuti.confirmDelete';
-
         return view('cuti.index', [
-            'pageTitle' => $pageTitle,
-            'createRoute' => $createRoute,
-            'columns' => $columns,
-            'fields' => $fields,
-            'data' => $data,
-            'showRoute' => $showRoute,
-            'editRoute' => $editRoute,
-            'confirmDeleteRoute' => $confirmDeleteRoute,
         ]);
     }
 
+    // Menampilkan form tambah cuti
     public function create()
     {
         return view('cuti.create');
     }
 
+    // Menyimpan data cuti baru
     public function store(Request $request)
     {
-        $this->seed();
         $request->validate([
-            'ID_Cuti' => 'required',
-            'Tanggal_Mulai' => 'required|date',
-            'Tanggal_Selesai' => 'required|date|after_or_equal:Tanggal_Mulai',
-            'Keterangan_Cuti' => 'required'
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'keterangan_cuti' => 'required|string|max:255',
         ]);
 
-        $cuti = new Cuti(
-            $request->ID_Cuti,
-            $request->Tanggal_Mulai,
-            $request->Tanggal_Selesai,
-            $request->Keterangan_Cuti
-        );
+        Cuti::create([
+            'tanggal_mulai' => $request->input('tanggal_mulai'),
+            'tanggal_selesai' => $request->input('tanggal_selesai'),
+            'keterangan_cuti' => $request->input('keterangan_cuti'),
+        ]);
 
-        self::$cutiList[] = $cuti;
-
-        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil ditambahkan.');
+        return redirect()->route('cuti.index');
     }
 
+    // Menampilkan detail cuti
     public function show($id)
     {
-        $this->seed();
-        $cuti = collect(self::$cutiList)->firstWhere('ID_Cuti', $id);
-        return view('cuti.show', ['cuti' => $cuti]);
+        $cuti = Cuti::findOrFail($id);
+        return view('cuti.show', compact('cuti'));
     }
 
+    // Menampilkan form edit cuti
     public function edit($id)
     {
-        $this->seed();
-        $cuti = collect(self::$cutiList)->firstWhere('ID_Cuti', $id);
-        return view('cuti.edit', ['cuti' => $cuti]);
+        $cuti = Cuti::findOrFail($id);
+        return view('cuti.edit', compact('cuti'));
     }
 
+    // Memproses update data cuti
     public function update(Request $request, $id)
     {
-        $this->seed();
-        foreach (self::$cutiList as $key => $cuti) {
-            if ($cuti->ID_Cuti === $id) {
-                self::$cutiList[$key]->Tanggal_Mulai = $request->Tanggal_Mulai;
-                self::$cutiList[$key]->Tanggal_Selesai = $request->Tanggal_Selesai;
-                self::$cutiList[$key]->Keterangan_Cuti = $request->Keterangan_Cuti;
-            }
-        }
+        $request->validate([
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'keterangan_cuti' => 'required|string|max:255',
+        ]);
 
-        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil diperbarui.');
+        $cuti = Cuti::findOrFail($id);
+
+        $cuti->update([
+            'tanggal_mulai' => $request->input('tanggal_mulai'),
+            'tanggal_selesai' => $request->input('tanggal_selesai'),
+            'keterangan_cuti' => $request->input('keterangan_cuti'),
+        ]);
+
+        return redirect()->route('cuti.show', $id);
     }
 
-    public function confirmDelete($id)
+    // Menampilkan halaman konfirmasi hapus
+    public function delete($id)
     {
-        $this->seed();
-        $cuti = collect(self::$cutiList)->firstWhere('ID_Cuti', $id);
-        return view('cuti.delete', ['cuti' => $cuti]);
+        $cuti = Cuti::findOrFail($id);
+        return view('cuti.delete', compact('cuti'));
     }
 
+    // Menghapus data cuti
     public function destroy($id)
     {
-        $this->seed();
-        self::$cutiList = array_filter(self::$cutiList, function ($cuti) use ($id) {
-            return $cuti->ID_Cuti !== $id;
-        });
+        $cuti = Cuti::findOrFail($id);
+        $cuti->delete();
 
-        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil dihapus.');
+        return redirect()->route('cuti.index');
     }
 }

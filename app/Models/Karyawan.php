@@ -2,22 +2,28 @@
 
 namespace App\Models;
 
-class Karyawan
-{
-    public $ID_Karyawan;
-    public $Nama;
-    public $Tanggal_Lahir;
-    public $Alamat;
-    public $Jabatan;
-    public $Riwayat_Pekerjaan;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-    public function __construct($ID_Karyawan, $Nama, $Tanggal_Lahir, $Alamat, $Jabatan, $Riwayat_Pekerjaan)
+class Karyawan extends Model
+{
+    use HasFactory;
+
+    protected $table = 'karyawan'; 
+    protected $fillable = ['nama', 'tanggal_lahir', 'alamat', 'jabatan', 'riwayat_pekerjaan'];
+
+    protected $primaryKey = 'id'; 
+
+    public $incrementing = false; 
+    protected $keyType = 'string';
+
+    public static function getAll()
     {
-        $this->ID_Karyawan = $ID_Karyawan;
-        $this->Nama = $Nama;
-        $this->Tanggal_Lahir = $Tanggal_Lahir;
-        $this->Alamat = $Alamat;
-        $this->Jabatan = $Jabatan;
-        $this->Riwayat_Pekerjaan = $Riwayat_Pekerjaan;
+        return Karyawan::all();
+    }
+
+    public static function find($id)
+    {
+        return Karyawan::where('id', $id)->first();
     }
 }
