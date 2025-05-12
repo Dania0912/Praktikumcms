@@ -12,11 +12,13 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('jabatan');
+            $table->timestamps();
+
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('hr');
+        Schema::dropIfExists('hrs');
     }
 };

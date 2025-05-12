@@ -9,7 +9,7 @@ class Cuti extends Model
     use HasFactory;
 
     protected $table = 'cuti'; // Menyesuaikan dengan nama tabel yang benar
-    protected $fillable = ['tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti'];
+    protected $fillable = ['karyawan_id','tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti'];
 
     protected $primaryKey = 'id'; // Menyertakan primary key
     public $incrementing = false; // Menyesuaikan dengan tipe data primary key
@@ -25,5 +25,9 @@ class Cuti extends Model
     public static function find($id)
     {
         return Cuti::where('id', $id)->first();
+    }
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'karyawan_id');
     }
 }

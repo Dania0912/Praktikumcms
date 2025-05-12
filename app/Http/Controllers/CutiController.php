@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cuti;
+use App\Models\Karyawan;
 
 class CutiController extends Controller
 {
@@ -10,25 +11,29 @@ class CutiController extends Controller
     public function index()
     {
         return view('cuti.index', [
+            'cuti'=> Cuti::all()
         ]);
     }
 
     // Menampilkan form tambah cuti
     public function create()
     {
-        return view('cuti.create');
+        $karyawans = Karyawan::all();
+        return view('cuti.create', compact('karyawans'));
     }
 
     // Menyimpan data cuti baru
     public function store(Request $request)
     {
         $request->validate([
+            'karyawan_id' => 'required|exists:karyawan,id',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'keterangan_cuti' => 'required|string|max:255',
         ]);
 
         Cuti::create([
+            'karyawan_id' => $request->input('karyawan_id'),
             'tanggal_mulai' => $request->input('tanggal_mulai'),
             'tanggal_selesai' => $request->input('tanggal_selesai'),
             'keterangan_cuti' => $request->input('keterangan_cuti'),

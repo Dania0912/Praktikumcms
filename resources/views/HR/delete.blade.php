@@ -4,11 +4,10 @@
     <h1>Konfirmasi Hapus HR</h1>
     <p>Apakah Anda yakin ingin menghapus data HR berikut?</p>
 
-    <p><strong>ID HR:</strong> {{ $hr->ID_HR }}</p>
-    <p><strong>Nama:</strong> {{ $hr->Nama }}</p>
-    <p><strong>Jabatan:</strong> {{ $hr->Jabatan }}</p>
+    <p><strong>Nama:</strong> {{ $hr->nama }}</p>
+    <p><strong>Jabatan:</strong> {{ $hr->jabatan }}</p>
 
-    <form action="{{ route('hr.destroy', $hr->ID_HR) }}" method="POST">
+    <form action="{{ route('hr.destroy', $hr->id) }}" method="POST">
         @csrf
         @method('DELETE')
         <button type="submit" class="btn btn-danger">Hapus</button>

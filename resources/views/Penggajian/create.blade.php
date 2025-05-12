@@ -15,7 +15,7 @@
         @csrf
 
         {{-- Jika pakai relasi ke karyawan, bisa ditambahkan select di sini --}}
-        {{-- 
+        
         <label>Nama Karyawan:
             <select name="karyawan_id" required>
                 @foreach($karyawans as $karyawan)
@@ -23,8 +23,9 @@
                 @endforeach
             </select>
         </label><br>
-        --}}
 
+
+        
         <label>Gaji Pokok: <input type="number" name="gaji_pokok" required></label><br>
         <label>Potongan: <input type="number" name="potongan" value="0"></label><br>
         <label>Bonus: <input type="number" name="bonus" value="0"></label><br>

@@ -17,13 +17,13 @@
         @csrf
 
         <div class="form-group">
-            <label for="Nama">Nama</label>
-            <input type="text" name="Nama" class="form-control" required>
+            <label for="nama">Nama</label>
+            <input type="text" name="nama" class="form-control" required>
         </div>
 
         <div class="form-group">
-            <label for="Jabatan">Jabatan</label>
-            <input type="text" name="Jabatan" class="form-control" required>
+            <label for="jabatan">Jabatan</label>
+            <input type="text" name="jabatan" class="form-control" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>

@@ -10,10 +10,13 @@ class CreateCutiTable extends Migration
     {
         Schema::create('cuti', function (Blueprint $table) {
             $table->id(); // ID auto-increment
+            $table->unsignedBigInteger('karyawan_id'); // Foreign key relasi (opsional)
             $table->string('keterangan_cuti'); // Menambahkan kolom keterangan_cuti
             $table->date('tanggal_mulai'); // Kolom untuk tanggal mulai cuti
             $table->date('tanggal_selesai'); // Kolom untuk tanggal selesai cuti
             $table->timestamps(); // Menambahkan kolom timestamps (created_at, updated_at)
+            $table->foreign('karyawan_id')->references('id')->on('karyawan')->onDelete('cascade');
+
         });
     }
 

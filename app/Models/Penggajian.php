@@ -7,16 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penggajian extends Model
 {
-    use HasFactory;
 
-    // Menentukan nama tabel sesuai dengan yang ada di database
-    protected $table = 'PENGGAJIAN';  // Pastikan ini sesuai dengan nama tabel di database
+        use HasFactory;
+    
+        protected $table = 'PENGGAJIAN';
+        protected $primaryKey = 'id';
+        public $incrementing = true;
+        protected $keyType = 'int';
+    
+        protected $fillable = [
+            'karyawan_id',
+            'gaji_pokok',
+            'potongan',
+            'bonus',
+            'catatan',
+        ];
+    
+    
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'karyawan_id');
+    }
 
-    // Menentukan kolom yang bisa diisi (mass assignable)
-    protected $fillable = [
-        'gaji_pokok',
-        'potongan',
-        'bonus',
-        'catatan',
-    ];
+    public function getRouteKeyName()
+    {
+        return 'ID_Penggajian';
+    }
+
 }

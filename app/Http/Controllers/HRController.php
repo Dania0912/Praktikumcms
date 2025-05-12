@@ -11,7 +11,7 @@ class HRController extends Controller
     public function index()
     {
         return view('hr.index', [
-            'hr' => HR::all()
+            'hrs' => HR::all()
         ]);
     }
 
@@ -79,8 +79,8 @@ class HRController extends Controller
     // Menghapus data 
     public function destroy($id)
     {
-        $hr = Karyawan::findOrFail($id);
-        $hr->delete();
+        $hr = HR::findOrFail($id);
+        $hr->ForceDelete();
 
         return redirect()->route('hr.index');
     }

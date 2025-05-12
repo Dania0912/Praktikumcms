@@ -17,7 +17,13 @@
 
     <form method="POST" action="{{ route('jadwalkerja.store') }}" style="line-height: 2;">
         @csrf
-        <label>ID Jadwal: <input type="text" name="id_jadwal" required></label><br>
+        <label>Nama Karyawan:
+            <select name="karyawan_id" required>
+                @foreach($karyawans as $karyawan)
+                    <option value="{{ $karyawan->id }}">{{ $karyawan->nama }}</option>
+                @endforeach
+            </select>
+        </label><br>
         <label>Tanggal Mulai: <input type="date" name="tanggal_mulai" required></label><br>
         <label>Tanggal Selesai: <input type="date" name="tanggal_selesai" required></label><br>
         <label>Waktu Mulai: <input type="time" name="waktu_mulai" required></label><br>

@@ -19,9 +19,9 @@
                             Penggajian #{{ $pg->ID_Penggajian }}
                         </a>
                         <div>
-                            <a href="{{ route('penggajian.edit', $pg->ID_Penggajian) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{{ route('penggajian.show', $pg->ID_Penggajian) }}" class="btn btn-info btn-sm">Detail</a>
-                            <a href="{{ route('penggajian.delete', $pg->ID_Penggajian) }}" class="btn btn-danger btn-sm">Hapus</a>
+                            <a href="{{ route('penggajian.edit', $pg->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('penggajian.show', $pg->id) }}" class="btn btn-info btn-sm">Detail</a>
+                            <a href="{{ route('penggajian.delete', $pg->id) }}" class="btn btn-danger btn-sm">Hapus</a>
                         </div>
                     </li>
                 @empty

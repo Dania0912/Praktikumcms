@@ -10,7 +10,7 @@ class JadwalKerja extends Model
     use HasFactory;
 
     protected $table = 'jadwalkerja'; 
-    protected $fillable = ['tanggal_mulai', 'tanggal_selesai', 'waktu_mulai', 'waktu_selesai'];
+    protected $fillable = ['karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'waktu_mulai', 'waktu_selesai'];
 
     protected $primaryKey = 'id'; 
 
@@ -25,5 +25,10 @@ class JadwalKerja extends Model
     public static function find($id)
     {
         return JadwalKerja::where('id', $id)->first();
+    }
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'karyawan_id');
     }
 }
