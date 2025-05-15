@@ -9,7 +9,7 @@ class HR extends Model
 {
     use HasFactory;
 
-    protected $table = 'hrs'; 
+    protected $table = 'HRS';
     protected $fillable = ['nama', 'jabatan'];
 
     protected $primaryKey = 'id'; 

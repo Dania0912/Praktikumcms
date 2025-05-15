@@ -10,10 +10,10 @@ class HRController extends Controller
     // Menampilkan daftar semua 
     public function index()
     {
-        return view('hr.index', [
-            'hrs' => HR::all()
-        ]);
+        $hrs = HR::all(); // Ambil semua data HR dari database
+        return view('HR.index', compact('hrs'));
     }
+
 
     // Menampilkan form tambah 
     public function create()
@@ -75,6 +75,8 @@ class HRController extends Controller
         $hr = HR::findOrFail($id);
         return view('hr.delete', compact('hr'));
     }
+
+
 
     // Menghapus data 
     public function destroy($id)

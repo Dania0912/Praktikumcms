@@ -10,18 +10,21 @@ class CreateCutiTable extends Migration
     {
         Schema::create('cuti', function (Blueprint $table) {
             $table->id(); // ID auto-increment
-            $table->unsignedBigInteger('karyawan_id'); // Foreign key relasi (opsional)
-            $table->string('keterangan_cuti'); // Menambahkan kolom keterangan_cuti
-            $table->date('tanggal_mulai'); // Kolom untuk tanggal mulai cuti
-            $table->date('tanggal_selesai'); // Kolom untuk tanggal selesai cuti
-            $table->timestamps(); // Menambahkan kolom timestamps (created_at, updated_at)
-            $table->foreign('karyawan_id')->references('id')->on('karyawan')->onDelete('cascade');
+            $table->unsignedBigInteger('karyawan_id'); // Foreign key
+            $table->unsignedBigInteger('id_hrs');
+            $table->string('keterangan_cuti');
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
+            $table->timestamps();
 
+            // Hanya gunakan foreign key yang sesuai dengan nama kolom
+            $table->foreign('karyawan_id')->references('id')->on('karyawan')->onDelete('cascade');
+            $table->foreign('id_hrs')->references('id')->on('hrs')->onDelete('cascade');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('cuti'); // Drop tabel cuti jika rollback
+        Schema::dropIfExists('cuti');
     }
 }

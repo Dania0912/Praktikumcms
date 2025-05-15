@@ -15,11 +15,17 @@
             <ul class="list-group">
                 @forelse($karyawan as $k)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="{{ route('karyawan.show', $k->id) }}" class="text-decoration-none">{{ $k->nama }}</a>
                         <div>
-                            <!-- You can add more actions here -->
-                            <a href="{{ route('karyawan.edit', $k->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{{ route('karyawan.show', $k->id) }}" class="btn btn-info btn-sm">Detail</a>
+                            <strong>{{ $k->nama }}</strong><br>
+                            <small class="text-muted">{{ $k->jabatan }}</small>
+                        </div>
+                        <div>
+                            <a href="{{ route('karyawan.edit', $k->id) }}" class="btn btn-warning btn-sm me-1">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a href="{{ route('karyawan.show', $k->id) }}" class="btn btn-info btn-sm">
+                                <i class="bi bi-eye"></i> Detail
+                            </a>
                         </div>
                     </li>
                 @empty

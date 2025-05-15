@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,26 +9,23 @@ class Cuti extends Model
 {
     use HasFactory;
 
-    protected $table = 'cuti'; // Menyesuaikan dengan nama tabel yang benar
-    protected $fillable = ['karyawan_id','tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti'];
+    protected $table = 'cuti';
 
-    protected $primaryKey = 'id'; // Menyertakan primary key
-    public $incrementing = false; // Menyesuaikan dengan tipe data primary key
-    protected $keyType = 'string'; // Jika id menggunakan tipe data string
+    protected $fillable = [
+        'karyawan_id',
+        'tanggal_mulai',
+        'tanggal_selesai',
+        'keterangan_cuti',
+        'id_hrs'
+    ];
 
-    // Method untuk mendapatkan semua data cuti
-    public static function getAll()
-    {
-        return Cuti::all();
-    }
-
-    // Method untuk mencari cuti berdasarkan id
-    public static function find($id)
-    {
-        return Cuti::where('id', $id)->first();
-    }
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class, 'karyawan_id');
+    }
+
+    public function hr()
+    {
+        return $this->belongsTo(HR::class, 'id_hrs');
     }
 }

@@ -15,13 +15,22 @@
             <ul class="list-group">
                 @forelse($penggajian as $pg)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="{{ route('penggajian.show', $pg->id) }}" class="text-decoration-none">
-                            Penggajian #{{ $pg->ID_Penggajian }}
-                        </a>
                         <div>
-                            <a href="{{ route('penggajian.edit', $pg->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{{ route('penggajian.show', $pg->id) }}" class="btn btn-info btn-sm">Detail</a>
-                            <a href="{{ route('penggajian.delete', $pg->id) }}" class="btn btn-danger btn-sm">Hapus</a>
+                            <strong>{{ $pg->karyawan->nama ?? 'Nama Karyawan Tidak Ditemukan' }}</strong><br>
+                            <small>
+                                Gaji Pokok: Rp {{ number_format($pg->gaji_pokok, 0, ',', '.') }} <br>
+                            </small>
+                        </div>
+                        <div>
+                            <a href="{{ route('penggajian.edit', $pg->id) }}" class="btn btn-warning btn-sm me-1">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a href="{{ route('penggajian.show', $pg->id) }}" class="btn btn-info btn-sm me-1">
+                                <i class="bi bi-eye"></i> Detail
+                            </a>
+                            <a href="{{ route('penggajian.delete', $pg->id) }}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Hapus
+                            </a>
                         </div>
                     </li>
                 @empty

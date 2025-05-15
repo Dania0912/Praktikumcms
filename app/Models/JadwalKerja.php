@@ -1,34 +1,40 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JadwalKerja extends Model
 {
-    use HasFactory;
+    protected $table = 'jadwalkerja'; // pastikan sesuai nama tabel di database
+    protected $primaryKey = 'id';
+    public $timestamps = true;
 
-    protected $table = 'jadwalkerja'; 
-    protected $fillable = ['karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'waktu_mulai', 'waktu_selesai'];
+    protected $fillable = [
+        'karyawan_id',
+        'id_hrs',
+        'tanggal_mulai',
+        'tanggal_selesai',
+        'waktu_mulai',
+        'waktu_selesai',
+    ];
 
-    protected $primaryKey = 'id'; 
+    // 👇 Supaya format tanggal dan waktu pas tanpa error
+    protected $casts = [
+        'tanggal_mulai'   => 'date:Y-m-d',
+        'tanggal_selesai' => 'date:Y-m-d',
+        'waktu_mulai'     => 'datetime:H:i:s',
+        'waktu_selesai'   => 'datetime:H:i:s',
+    ];
 
-    public $incrementing = false; 
-    protected $keyType = 'string';
-
-    public static function getAll()
-    {
-        return JadwalKerja::all();
-    }
-
-    public static function find($id)
-    {
-        return JadwalKerja::where('id', $id)->first();
-    }
-
+    // Relasi ke karyawan
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class, 'karyawan_id');
+    }
+
+    // Relasi ke HR
+    public function hrs()
+    {
+        return $this->belongsTo(HR::class, 'id_hrs');
     }
 }

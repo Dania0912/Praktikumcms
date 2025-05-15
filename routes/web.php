@@ -22,20 +22,24 @@ Route::get('/hr/{id}/delete', [HRController::class, 'delete'])->name('hr.confirm
 
 
 // ======================== Cuti ========================
-// Route::get('/cuti/{id}/delete', [CutiController::class, 'delete'])->name('cuti.delete');
-// Route::delete('/cuti/{id}', [CutiController::class, 'destroy'])->name('cuti.destroy');
-// Route::get('/cuti/create', [CutiController::class, 'create'])->name('cuti.create');
-// Route::get('/cuti', [CutiController::class, 'store'])->name('cuti.store');
 Route::resource('cuti', CutiController::class);
+Route::get('/cuti/{id}/delete', [CutiController::class, 'delete'])->name('cuti.delete');
+Route::get('/cuti/{id}/edit', [CutiController::class, 'edit'])->name('cuti.edit');
+Route::get('cuti/create', [CutiController::class, 'create'])->name('cuti.create');
+
+
+
 
 
 // ======================== Penggajian ========================
 Route::resource('penggajian', PenggajianController::class);
 Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
-Route::get('/penggajian{id}/delete', [PenggajianController::class, 'delete'])->name('penggajian.delete');
+Route::get('/penggajian/{id}/delete', [PenggajianController::class, 'delete'])->name('penggajian.delete');
 Route::get('/penggajian{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
 
 // ======================== Jadwal Kerja ========================
 Route::resource('jadwalkerja', JadwalKerjaController::class);
-Route::get('/jadwalkerja{id}/delete', [JadwalKerjaController::class, 'delete'])->name('jadwalkerja.delete');
-Route::get('/jadwalkerja{id}/edit', [JadwalKerjaController::class, 'edit'])->name('jadwalkerja.edit');
+Route::get('/jadwalkerja/{id}/delete', [JadwalKerjaController::class, 'delete'])->name('jadwalkerja.delete');
+Route::get('/jadwalkerja/{id}/edit', [JadwalKerjaController::class, 'edit'])->name('jadwalkerja.edit');
+Route::get('jadwalkerja/create', [JadwalKerjaController::class, 'create'])->name('jadwalkerja.create');
+Route::put('/jadwalkerja{id}/update', [JadwalKerjaController::class, 'update'])->name('jadwalkerja.update');

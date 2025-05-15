@@ -3,24 +3,52 @@
 @section('title', 'Edit Cuti')
 
 @section('content')
-    <h1>Edit Cuti</h1>
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Edit Cuti</h4>
+        </div>
 
-    <form method="POST" action="{{ route('cuti.update', $cuti->id) }}">
-        @csrf
-        @method('PUT')
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <label>Tanggal Mulai:</label><br>
-        <input type="date" name="tanggal_mulai" value="{{ $cuti->tanggal_mulai }}"><br><br>
+            <form method="POST" action="{{ route('cuti.update', $cuti->id) }}">
+                @csrf
+                @method('PUT')
 
-        <label>Tanggal Selesai:</label><br>
-        <input type="date" name="tanggal_selesai" value="{{ $cuti->tanggal_selesai }}"><br><br>
+                <div class="mb-3">
+                    <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
+                    <input type="date" name="tanggal_mulai" class="form-control" value="{{ $cuti->tanggal_mulai }}" required>
+                </div>
 
-        <label>Keterangan Cuti:</label><br>
-        <input type="text" name="keterangan_cuti" value="{{ $cuti->keterangan_cuti }}"><br><br>
+                <div class="mb-3">
+                    <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
+                    <input type="date" name="tanggal_selesai" class="form-control" value="{{ $cuti->tanggal_selesai }}" required>
+                </div>
 
-        <button style="margin-top: 10px;">Simpan</button>
-    </form>
+                <div class="mb-4">
+                    <label for="keterangan_cuti" class="form-label">Keterangan Cuti</label>
+                    <input type="text" name="keterangan_cuti" class="form-control" value="{{ $cuti->keterangan_cuti }}" required>
+                </div>
 
-    <br>
-    <a href="{{ route('cuti.show', $cuti->id) }}">← Kembali ke detail</a>
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('cuti.show', $cuti->id) }}" class="btn btn-secondary">
+                        Batal
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save me-1"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

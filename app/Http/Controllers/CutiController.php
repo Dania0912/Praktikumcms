@@ -1,28 +1,28 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cuti;
+use App\Models\HR;
 use App\Models\Karyawan;
 
 class CutiController extends Controller
 {
-    // Menampilkan daftar semua cuti
     public function index()
     {
         return view('cuti.index', [
-            'cuti'=> Cuti::all()
+            'cuti' => Cuti::all()
         ]);
     }
 
-    // Menampilkan form tambah cuti
     public function create()
     {
         $karyawans = Karyawan::all();
-        return view('cuti.create', compact('karyawans'));
+        $hrs = HR::all();
+        return view('cuti.create', compact('karyawans', 'hrs'));
     }
 
-    // Menyimpan data cuti baru
     public function store(Request $request)
     {
         $request->validate([
@@ -30,65 +30,60 @@ class CutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'keterangan_cuti' => 'required|string|max:255',
+            'id_hrs' => 'required|exists:HRS,id',
         ]);
 
-        Cuti::create([
-            'karyawan_id' => $request->input('karyawan_id'),
-            'tanggal_mulai' => $request->input('tanggal_mulai'),
-            'tanggal_selesai' => $request->input('tanggal_selesai'),
-            'keterangan_cuti' => $request->input('keterangan_cuti'),
-        ]);
+        Cuti::create($request->only([
+            'karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti', 'id_hrs'
+        ]));
 
-        return redirect()->route('cuti.index');
+        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil ditambahkan.');
     }
 
-    // Menampilkan detail cuti
     public function show($id)
     {
         $cuti = Cuti::findOrFail($id);
         return view('cuti.show', compact('cuti'));
     }
 
-    // Menampilkan form edit cuti
     public function edit($id)
     {
         $cuti = Cuti::findOrFail($id);
-        return view('cuti.edit', compact('cuti'));
+        $karyawans = Karyawan::all();
+        $hrs = HR::all();
+        return view('cuti.edit', compact('cuti', 'karyawans', 'hrs'));
     }
 
-    // Memproses update data cuti
     public function update(Request $request, $id)
     {
         $request->validate([
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'keterangan_cuti' => 'required|string|max:255',
+            'id_hrs' => 'required|exists:HRS,id',
         ]);
 
         $cuti = Cuti::findOrFail($id);
+        $cuti->update($request->only([
+            'tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti', 'id_hrs'
+        ]));
 
-        $cuti->update([
-            'tanggal_mulai' => $request->input('tanggal_mulai'),
-            'tanggal_selesai' => $request->input('tanggal_selesai'),
-            'keterangan_cuti' => $request->input('keterangan_cuti'),
-        ]);
-
-        return redirect()->route('cuti.show', $id);
+        return redirect()->route('cuti.show', $id)->with('success', 'Data cuti berhasil diperbarui.');
     }
 
-    // Menampilkan halaman konfirmasi hapus
+    // Halaman konfirmasi hapus
     public function delete($id)
     {
         $cuti = Cuti::findOrFail($id);
         return view('cuti.delete', compact('cuti'));
     }
 
-    // Menghapus data cuti
+    // Proses hapus data
     public function destroy($id)
     {
         $cuti = Cuti::findOrFail($id);
         $cuti->delete();
 
-        return redirect()->route('cuti.index');
+        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil dihapus.');
     }
 }

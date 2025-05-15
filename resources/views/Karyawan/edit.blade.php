@@ -3,30 +3,64 @@
 @section('title', 'Edit Karyawan')
 
 @section('content')
-    <h1>Edit Karyawan</h1>
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Edit Karyawan</h4>
+        </div>
 
-    <form method="POST" action="{{ route('karyawan.update', $karyawan->id) }}">
-        @csrf
-        @method('PUT')
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <label>Nama:</label><br>
-        <input type="text" name="nama" value="{{ $karyawan->nama }}"><br><br>
+            <form action="{{ route('karyawan.update', $karyawan->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-        <label>Tanggal Lahir:</label><br>
-        <input type="date" name="tanggal_lahir" value="{{ $karyawan->tanggal_lahir }}"><br><br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" name="nama" class="form-control" value="{{ $karyawan->nama }}" required>
+                    </div>
 
-        <label>Alamat:</label><br>
-        <input type="text" name="alamat" value="{{ $karyawan->alamat }}"><br><br>
+                    <div class="col-md-6 mb-3">
+                        <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                        <input type="date" name="tanggal_lahir" class="form-control" value="{{ $karyawan->tanggal_lahir }}" required>
+                    </div>
+                </div>
 
-        <label>Jabatan:</label><br>
-        <input type="text" name="jabatan" value="{{ $karyawan->jabatan }}"><br><br>
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat</label>
+                    <input type="text" name="alamat" class="form-control" value="{{ $karyawan->alamat }}" required>
+                </div>
 
-        <label>Riwayat Pekerjaan:</label><br>
-        <input type="text" name="riwayat_pekerjaan" value="{{ $karyawan->riwayat_pekerjaan }}"><br><br>
+                <div class="mb-3">
+                    <label for="jabatan" class="form-label">Jabatan</label>
+                    <input type="text" name="jabatan" class="form-control" value="{{ $karyawan->jabatan }}" required>
+                </div>
 
-        <button style="margin-top: 10px;">Simpan</button>
-    </form>
+                <div class="mb-3">
+                    <label for="riwayat_pekerjaan" class="form-label">Riwayat Pekerjaan</label>
+                    <input type="text" name="riwayat_pekerjaan" class="form-control" value="{{ $karyawan->riwayat_pekerjaan }}" required>
+                </div>
 
-    <br>
-    <a href="{{ route('karyawan.show', $karyawan->id) }}">← Kembali ke detail</a>
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('karyawan.show', $karyawan->id) }}" class="btn btn-secondary">
+                        Batal
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save me-1"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

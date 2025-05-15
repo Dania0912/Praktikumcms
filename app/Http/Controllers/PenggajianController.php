@@ -5,24 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Penggajian;
 use App\Models\Karyawan;
+use App\Models\HR;
 
 class PenggajianController extends Controller
 {
-    public function index()
-    {
-        return view('penggajian.index', [
-            'penggajian' => Penggajian::all()
-        ]);
-    }
-
-
+    // Menampilkan form untuk membuat data penggajian baru
     public function create()
     {
         $karyawans = Karyawan::all();
-        return view('penggajian.create', compact('karyawans'));
+        $hrs = HR::all(); // ambil data HR untuk dropdown
+        return view('penggajian.create', compact('karyawans', 'hrs'));
     }
 
-
+    // Menyimpan data penggajian ke database
     public function store(Request $request)
     {
         $request->validate([
@@ -30,7 +25,8 @@ class PenggajianController extends Controller
             'gaji_pokok' => 'required|numeric',
             'potongan' => 'required|numeric',
             'bonus' => 'required|numeric',
-            'catatan' => 'required|string|max:255',
+            'catatan' => 'nullable|string|max:255',
+            'id_hrs' => 'required|exists:HRS,id',
         ]);
         
         Penggajian::create([
@@ -39,40 +35,39 @@ class PenggajianController extends Controller
             'potongan' => $request->input('potongan'),
             'bonus' => $request->input('bonus'),
             'catatan' => $request->input('catatan'),
+            'id_hrs' => $request->input('id_hrs'),
         ]);
         
         return redirect()->route('penggajian.index');
     }
 
-    // Menampilkan detail
+    // Menampilkan detail penggajian
     public function show($id)
     {
         $penggajian = Penggajian::find($id);
-    
+
         if (!$penggajian) {
             return redirect()->route('penggajian.index')->with('error', 'Data Penggajian tidak ditemukan.');
         }
-    
+
         return view('penggajian.show', compact('penggajian'));
     }
-    
 
-
-    // Menampilkan form edit 
+    // Menampilkan form edit penggajian
     public function edit($id)
     {
         $penggajian = Penggajian::findOrFail($id);
         return view('penggajian.edit', compact('penggajian'));
     }
 
-    // Memproses update data karyawan
+    // Memproses update data penggajian
     public function update(Request $request, $id)
     {
         $request->validate([
             'gaji_pokok' => 'required|numeric',
             'potongan' => 'required|numeric',
             'bonus' => 'required|numeric',
-            'catatan' => 'required|string|max:255',
+            'catatan' => 'nullable|string|max:255',
         ]);
 
         $penggajian = Penggajian::findOrFail($id);
@@ -94,7 +89,15 @@ class PenggajianController extends Controller
         return view('penggajian.delete', compact('penggajian'));
     }
 
-    // Menghapus data 
+    public function index()
+    {
+        $penggajian = Penggajian::with(['karyawan', 'hr'])->get();
+        return view('penggajian.index', compact('penggajian'));
+    }
+    
+
+
+    // Menghapus data penggajian
     public function destroy($id)
     {
         $penggajian = Penggajian::findOrFail($id);

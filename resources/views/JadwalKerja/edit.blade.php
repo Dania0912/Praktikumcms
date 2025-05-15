@@ -3,39 +3,85 @@
 @section('title', 'Edit Jadwal Kerja')
 
 @section('content')
-    <h1>Edit Jadwal Kerja</h1>
-
-    @if ($errors->any())
-        <div style="color:red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Edit Jadwal Kerja</h4>
         </div>
-    @endif
 
-    <form method="POST" action="{{ route('jadwalkerja.update', $jadwalkerja->id) }}">
-        @csrf
-        @method('PUT')
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <label>ID Jadwal:</label><br>
-        <input type="text" name="id_jadwal" value="{{ $jadwalkerja->id}}" readonly><br><br>
+            <form method="POST" action="{{ route('jadwalkerja.update', $jadwalkerja->id) }}">
+                @csrf
+                @method('PUT')
 
-        <label>Tanggal Mulai:</label><br>
-        <input type="date" name="tanggal_mulai" value="{{ $jadwalkerja->tanggal_mulai }}"><br><br>
+                <div class="mb-3">
+                    <label for="karyawan_id" class="form-label">Nama Karyawan</label>
+                    <select name="karyawan_id" class="form-select" required>
+                        <option disabled>-- Pilih Karyawan --</option>
+                        @foreach($karyawans as $karyawan)
+                            <option value="{{ $karyawan->id }}" {{ $jadwalkerja->karyawan_id == $karyawan->id ? 'selected' : '' }}>
+                                {{ $karyawan->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-        <label>Tanggal Selesai:</label><br>
-        <input type="date" name="tanggal_selesai" value="{{ $jadwalkerja->tanggal_selesai }}"><br><br>
+                <div class="mb-3">
+                    <label for="id_hrs" class="form-label">HR</label>
+                    <select name="id_hrs" class="form-select" required>
+                        <option disabled>-- Pilih HR --</option>
+                        @foreach($hrs as $hr)
+                            <option value="{{ $hr->id }}" {{ $jadwalkerja->id_hrs == $hr->id ? 'selected' : '' }}>
+                                {{ $hr->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-        <label>Waktu Mulai:</label><br>
-        <input type="time" name="waktu_mulai" value="{{ $jadwalkerja->waktu_mulai }}"><br><br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
+                        <input type="date" name="tanggal_mulai" class="form-control" value="{{ old('tanggal_mulai', $jadwalkerja->tanggal_mulai->format('Y-m-d')) }}" required>
+                    </div>
 
-        <label>Waktu Selesai:</label><br>
-        <input type="time" name="waktu_selesai" value="{{ $jadwalkerja->waktu_selesai }}"><br><br>
+                    <div class="col-md-6 mb-3">
+                        <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
+                        <input type="date" name="tanggal_selesai" class="form-control" value="{{ old('tanggal_selesai', $jadwalkerja->tanggal_selesai->format('Y-m-d')) }}" required>
+                    </div>
+                </div>
 
-        <button type="submit" style="margin-top: 10px;">Simpan</button>
-    </form>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="waktu_mulai" class="form-label">Waktu Mulai</label>
+                        <input type="time" name="waktu_mulai" class="form-control" value="{{ old('waktu_mulai', $jadwalkerja->waktu_mulai) }}" required>
+                    </div>
 
-    <a href="{{ route('jadwalkerja.show', $jadwalkerja->id) }}">← Kembali ke detail</a>
+                    <div class="col-md-6 mb-3">
+                        <label for="waktu_selesai" class="form-label">Waktu Selesai</label>
+                        <input type="time" name="waktu_selesai" class="form-control" value="{{ old('waktu_selesai', $jadwalkerja->waktu_selesai) }}" required>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('jadwalkerja.show', $jadwalkerja->id) }}" class="btn btn-secondary">
+                        Batal
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save me-1"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

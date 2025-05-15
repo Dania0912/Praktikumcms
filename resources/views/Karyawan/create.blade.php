@@ -3,17 +3,60 @@
 @section('title', 'Tambah Karyawan')
 
 @section('content')
-    <h2 style="margin-bottom: 16px;">Tambah Karyawan Baru</h2>
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Tambah Karyawan Baru</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ route('karyawan.store') }}">
+                @csrf
 
-    <form method="POST" action="{{ route('karyawan.store') }}" style="line-height: 2;">
-        @csrf
-        <label>Nama: <input type="text" name="nama" required></label><br>
-        <label>Tanggal Lahir: <input type="date" name="tanggal_lahir" required></label><br>
-        <label>Alamat: <input type="text" name="alamat" required></label><br>
-        <label>Jabatan: <input type="text" name="jabatan" required></label><br>
-        <label>Riwayat Pekerjaan: <input type="text" name="riwayat_pekerjaan" required></label><br>
-        <button type="submit" style="margin-top: 10px;">Tambah</button>
-    </form>
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Nama</label>
+                    <input type="text" name="nama" class="form-control" required>
+                </div>
 
-    <a href="{{ route('karyawan.index') }}" style="display: inline-block; margin-top: 20px;">← Kembali ke daftar</a>
+                <div class="mb-3">
+                    <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                    <input type="date" name="tanggal_lahir" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat</label>
+                    <input type="text" name="alamat" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="jabatan" class="form-label">Jabatan</label>
+                    <input type="text" name="jabatan" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="riwayat_pekerjaan" class="form-label">Riwayat Pekerjaan</label>
+                    <input type="text" name="riwayat_pekerjaan" class="form-control" required>
+                </div>
+
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('karyawan.index') }}" class="btn btn-secondary">
+                        ← Kembali ke daftar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i> Simpan Karyawan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('riwayat_pekerjaan');
             $table->timestamps();
+
+            
         });
     }
 

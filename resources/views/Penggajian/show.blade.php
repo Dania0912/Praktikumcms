@@ -3,25 +3,35 @@
 @section('title', 'Detail Penggajian')
 
 @section('content')
-    <h2>Detail Penggajian</h2>
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Detail Penggajian</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-4">
+                <p><strong>ID Penggajian:</strong> {{ $penggajian->id }}</p>
+                <p><strong>Gaji Pokok:</strong> {{ number_format($penggajian->Gaji_Pokok, 0, ',', '.') }}</p>
+                <p><strong>Potongan:</strong> {{ number_format($penggajian->Potongan, 0, ',', '.') }}</p>
+                <p><strong>Bonus:</strong> {{ number_format($penggajian->Bonus, 0, ',', '.') }}</p>
+                <p><strong>Catatan:</strong> {{ $penggajian->Catatan }}</p>
+            </div>
 
-    <p><strong>ID Penggajian:</strong> {{ $penggajian->id }}</p>
-    <p><strong>Gaji Pokok:</strong> {{ number_format($penggajian->Gaji_Pokok, 0, ',', '.') }}</p>
-    <p><strong>Potongan:</strong> {{ number_format($penggajian->Potongan, 0, ',', '.') }}</p>
-    <p><strong>Bonus:</strong> {{ number_format($penggajian->Bonus, 0, ',', '.') }}</p>
-    <p><strong>Catatan:</strong> {{ $penggajian->Catatan }}</p>
+            <div class="d-flex justify-content-between">
+                <a href="{{ route('penggajian.edit', $penggajian->id) }}" class="btn btn-warning">
+                    Edit
+                </a>
 
-    <br>
-
-    <a href="{{ route('penggajian.edit', $penggajian->id) }}">✏️ Edit</a> |
-    <form action="{{ route('penggajian.destroy', $penggajian->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-sm btn-danger">🗑️ Hapus</button>
-</form>
+                <a href="{{ route('penggajian.delete', $penggajian->id) }}" class="btn btn-danger">
+                Hapus
+                </a>
 
 
-    <br><br>
-
-    <a href="{{ route('penggajian.index') }}">← Kembali ke daftar</a>
+                <a href="{{ route('penggajian.index') }}" class="btn btn-secondary">
+                    ← Kembali ke daftar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

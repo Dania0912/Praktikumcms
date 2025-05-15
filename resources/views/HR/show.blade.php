@@ -1,17 +1,36 @@
 @extends('layouts.app')
 
+@section('title', 'Detail HR')
+
 @section('content')
-    <h1>Detail HR</h1>
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Detail HR</h4>
+        </div>
+        <div class="card-body">
+            @if ($hr)
+                <div class="mb-4">
+                    <p><strong>Nama:</strong> {{ $hr->nama }}</p>
+                    <p><strong>Jabatan:</strong> {{ $hr->jabatan }}</p>
+                </div>
 
-    @if ($hr)
-        <p><strong>Nama:</strong> {{ $hr->nama }}</p>
-        <p><strong>Jabatan:</strong> {{ $hr->jabatan }}</p>
-
-        <a href="{{ route('hr.edit', $hr->id) }}" class="btn btn-primary">Edit</a>
-        <a href="{{ route('hr.confirmDelete', $hr->id) }}" class="btn btn-danger">Hapus</a>
-    @else
-        <p class="text-danger">Data HR tidak ditemukan.</p>
-    @endif
-
-    <a href="{{ route('hr.index') }}" class="btn btn-secondary mt-3">← Kembali ke daftar</a>
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('hr.edit', $hr->id) }}" class="btn btn-warning">
+                        Edit
+                    </a>
+                    <a href="{{ route('hr.confirmDelete', $hr->id) }}" class="btn btn-danger">
+                        Hapus
+                    </a>
+                    <a href="{{ route('hr.index') }}" class="btn btn-secondary">
+                        ← Kembali ke daftar
+                    </a>
+                </div>
+            @else
+                <p class="text-danger">Data HR tidak ditemukan.</p>
+                <a href="{{ route('hr.index') }}" class="btn btn-secondary mt-3">← Kembali ke daftar</a>
+            @endif
+        </div>
+    </div>
+</div>
 @endsection

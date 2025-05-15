@@ -15,12 +15,17 @@
             <ul class="list-group">
                 @forelse($hrs as $hr)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="{{ route('hr.show', $hr->id) }}" class="text-decoration-none">
-                            {{ $hr->nama }} - {{ $hr->jabatan }}
-                        </a>
                         <div>
-                            <a href="{{ route('hr.edit', $hr->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{{ route('hr.show', $hr->id) }}" class="btn btn-info btn-sm">Detail</a>
+                            <strong>{{ $hr->nama }}</strong><br>
+                            <small class="text-muted">{{ $hr->jabatan }}</small>
+                        </div>
+                        <div>
+                            <a href="{{ route('hr.edit', $hr->id) }}" class="btn btn-warning btn-sm me-1">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a href="{{ route('hr.show', $hr->id) }}" class="btn btn-info btn-sm">
+                                <i class="bi bi-eye"></i> Detail
+                            </a>
                         </div>
                     </li>
                 @empty

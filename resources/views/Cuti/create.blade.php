@@ -1,33 +1,56 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Cuti')
-
 @section('content')
-    <h2 style="margin-bottom: 16px;">Tambah Cuti Baru</h2>
+    <h1>Tambah Cuti</h1>
 
-    <form method="POST" action="{{ route('cuti.store') }}" style="line-height: 2;">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('cuti.store') }}" method="POST">
         @csrf
-        <label>Nama Karyawan:
-            <select name="karyawan_id" required>
+
+        <div class="form-group mb-3">
+            <label for="karyawan_id">Karyawan</label>
+            <select name="karyawan_id" id="karyawan_id" class="form-control" required>
                 @foreach($karyawans as $karyawan)
                     <option value="{{ $karyawan->id }}">{{ $karyawan->nama }}</option>
                 @endforeach
             </select>
-        </label><br>
-        <label>Tanggal Mulai: 
-            <input type="date" name="tanggal_mulai" required>
-        </label><br>
+        </div>
 
-        <label>Tanggal Selesai: 
-            <input type="date" name="tanggal_selesai" required>
-        </label><br>
+        <div class="form-group mb-3">
+            <label for="id_hrs">HR</label>
+            <select name="id_hrs" id="id_hrs" class="form-control" required>
+                @foreach($hrs as $hr)
+                    <option value="{{ $hr->id }}">{{ $hr->nama }}</option>
+                @endforeach
+            </select>
+        </div>
 
-        <label>Keterangan Cuti: 
-            <input type="text" name="keterangan_cuti" required>
-        </label><br>
+        <div class="form-group mb-3">
+            <label for="tanggal_mulai">Tanggal Mulai</label>
+            <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" required>
+        </div>
 
-        <button type="submit" style="margin-top: 10px;">Tambah</button>
+        <div class="form-group mb-3">
+            <label for="tanggal_selesai">Tanggal Selesai</label>
+            <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="keterangan_cuti">Keterangan Cuti</label>
+            <textarea name="keterangan_cuti" id="keterangan_cuti" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 
-    <a href="{{ route('cuti.index') }}" style="display: inline-block; margin-top: 20px;">← Kembali ke daftar</a>
+    <a href="{{ route('cuti.index') }}" class="btn btn-secondary mt-3">← Kembali ke daftar</a>
 @endsection

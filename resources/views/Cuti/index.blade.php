@@ -15,12 +15,23 @@
             <ul class="list-group">
                 @forelse($cuti as $c)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="{{ route('cuti.show', $c->id) }}" class="text-decoration-none">
-                            {{ $c->keterangan_cuti }} ({{ $c->tanggal_mulai }} s/d {{ $c->tanggal_selesai }})
-                        </a>
                         <div>
-                            <a href="{{ route('cuti.edit', $c->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{{ route('cuti.show', $c->id) }}" class="btn btn-info btn-sm">Detail</a>
+                            <strong>{{ \Carbon\Carbon::parse($c->tanggal_mulai)->translatedFormat('l, d M Y') }}</strong><br>
+                            <small>{{ $c->keterangan_cuti }} — {{ $c->tanggal_selesai }}</small><br>
+                            <small class="text-muted">{{ $c->karyawan->nama ?? 'Tanpa Nama Karyawan' }}</small>
+                        </div>
+                        <div>
+                            <a href="{{ route('cuti.edit', $c->id) }}" class="btn btn-warning btn-sm me-1">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a href="{{ route('cuti.show', $c->id) }}" class="btn btn-info btn-sm me-1">
+                                <i class="bi bi-eye"></i> Detail
+                            </a>
+                            <a href="{{ route('cuti.delete', $c->id) }}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Hapus
+                            </a>
+
+
                         </div>
                     </li>
                 @empty

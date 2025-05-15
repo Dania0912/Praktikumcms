@@ -3,18 +3,36 @@
 @section('title', 'Detail Cuti')
 
 @section('content')
-    <h2>Detail Cuti</h2>
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Detail Cuti</h4>
+        </div>
+        <div class="card-body">
+            @if ($cuti)
+                <div class="mb-4">
+                    <p><strong>Karyawan:</strong> {{ $cuti->karyawan->nama ?? 'Tanpa Nama Karyawan' }}</p>
+                    <p><strong>Tanggal Mulai:</strong> {{ $cuti->tanggal_mulai }}</p>
+                    <p><strong>Tanggal Selesai:</strong> {{ $cuti->tanggal_selesai }}</p>
+                    <p><strong>Keterangan Cuti:</strong> {{ $cuti->keterangan_cuti }}</p>
+                </div>
 
-    <p><strong>Tanggal Mulai:</strong> {{ $cuti->tanggal_mulai }}</p>
-    <p><strong>Tanggal Selesai:</strong> {{ $cuti->tanggal_selesai }}</p>
-    <p><strong>Keterangan Cuti:</strong> {{ $cuti->keterangan_cuti }}</p>
+                <div class="d-flex justify-content-between">
+                <a href="{{ route('cuti.edit', $cuti->id) }}" class="btn btn-warning">Edit</a>
 
-    <br>
+                <form action="{{ route('cuti.destroy', $cuti->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data cuti ini?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
 
-    <a href="{{ route('cuti.edit', $cuti->id) }}">✏️ Edit</a> |
-    <a href="{{ route('cuti.delete', $cuti->id) }}">🗑️ Hapus</a>
+                <a href="{{ route('cuti.index') }}" class="btn btn-secondary">← Kembali ke daftar</a>
+            </div>
 
-    <br><br>
-
-    <a href="{{ route('cuti.index') }}">← Kembali ke daftar</a>
+            @else
+                <p class="text-danger">Data cuti tidak ditemukan.</p>
+            @endif
+        </div>
+    </div>
+</div>
 @endsection

@@ -7,31 +7,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penggajian extends Model
 {
+    use HasFactory;
 
-        use HasFactory;
-    
-        protected $table = 'PENGGAJIAN';
-        protected $primaryKey = 'id';
-        public $incrementing = true;
-        protected $keyType = 'int';
-    
-        protected $fillable = [
-            'karyawan_id',
-            'gaji_pokok',
-            'potongan',
-            'bonus',
-            'catatan',
-        ];
-    
-    
+    protected $table = 'penggajian'; // Menyesuaikan dengan nama tabel yang benar
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+    protected $fillable = [
+        'karyawan_id',
+        'gaji_pokok',
+        'potongan',
+        'bonus',
+        'catatan',
+        'id_hrs'  // Menambahkan id_hrs untuk hubungan dengan HR
+    ];
+
+    // Relasi ke Karyawan
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class, 'karyawan_id');
     }
 
-    public function getRouteKeyName()
+    // Relasi ke HR
+    public function hr()
     {
-        return 'ID_Penggajian';
+        return $this->belongsTo(HR::class, 'id_hrs');
     }
 
+    // Jika ingin menggunakan ID khusus dalam route, Anda bisa menambahkan ini
+    public function getRouteKeyName()
+    {
+        return 'id'; // Menyesuaikan dengan nama primary key yang digunakan
+    }
 }
