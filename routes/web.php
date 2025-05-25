@@ -28,9 +28,6 @@ Route::get('/cuti/{id}/edit', [CutiController::class, 'edit'])->name('cuti.edit'
 Route::get('cuti/create', [CutiController::class, 'create'])->name('cuti.create');
 
 
-
-
-
 // ======================== Penggajian ========================
 Route::resource('penggajian', PenggajianController::class);
 Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');

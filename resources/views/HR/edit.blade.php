@@ -26,12 +26,12 @@
 
                 <div class="mb-3">
                     <label for="nama" class="form-label">Nama</label>
-                    <input type="text" name="nama" class="form-control" value="{{ $hr->nama }}" required>
+                    <input type="text" name="nama" class="form-control" value="{{ old('nama', $hr->nama) }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="jabatan" class="form-label">Jabatan</label>
-                    <input type="text" name="jabatan" class="form-control" value="{{ $hr->jabatan }}" required>
+                    <input type="text" name="jabatan" class="form-control" value="{{ old('jabatan', $hr->jabatan) }}" required>
                 </div>
 
                 <div class="d-flex justify-content-between">

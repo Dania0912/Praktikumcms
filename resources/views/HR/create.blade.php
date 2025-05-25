@@ -18,12 +18,12 @@
 
         <div class="form-group">
             <label for="nama">Nama</label>
-            <input type="text" name="nama" class="form-control" required>
+            <input type="text" name="nama" class="form-control" value="{{ old('nama') }}" required>
         </div>
 
         <div class="form-group">
             <label for="jabatan">Jabatan</label>
-            <input type="text" name="jabatan" class="form-control" required>
+            <input type="text" name="jabatan" class="form-control" value="{{ old('jabatan') }}" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>
