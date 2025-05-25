@@ -97,3 +97,4 @@ class KaryawanController extends Controller
         return redirect()->route('karyawan.index');
     }
 }
+// test update 26 Mei

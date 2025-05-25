@@ -106,3 +106,4 @@ class PenggajianController extends Controller
         return redirect()->route('penggajian.index');
     }
 }
+// test update 26 Mei
