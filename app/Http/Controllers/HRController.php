@@ -87,3 +87,4 @@ class HRController extends Controller
         return redirect()->route('hr.index');
     }
 }
+// test update 26 Mei
