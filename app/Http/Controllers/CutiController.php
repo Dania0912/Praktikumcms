@@ -87,3 +87,4 @@ class CutiController extends Controller
         return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil dihapus.');
     }
 }
+// test update 26 Mei
