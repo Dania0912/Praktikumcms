@@ -7,84 +7,100 @@ use App\Models\HR;
 
 class HRController extends Controller
 {
-    // Menampilkan daftar semua 
+    // Menampilkan semua data HR
     public function index()
     {
-        $hrs = HR::all(); // Ambil semua data HR dari database
-        return view('HR.index', compact('hrs'));
+        return view('hr.index', [
+            'hrs' => HR::all()
+        ]);
     }
 
-
-    // Menampilkan form tambah 
+    // Menampilkan form tambah HR
     public function create()
     {
         return view('hr.create');
     }
 
-    // Menyimpan data 
+    // Menyimpan data HR baru
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
+            'nama' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',        // hanya huruf dan spasi
+                'not_regex:/^\.+$/',            // tidak boleh hanya titik-titik
+            ],
+            'jabatan' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',        // hanya huruf dan spasi
+                'not_regex:/^\.+$/',            // tidak boleh hanya titik-titik
+            ],
         ]);
+        
 
-        HR::create([
-            'nama' => $request->input('nama'),
-            'jabatan' => $request->input('jabatan'),
-        ]);
+        HR::create($request->only(['nama', 'jabatan']));
 
-        return redirect()->route('hr.index');
+        return redirect()->route('hr.index')->with('success', 'Data HR berhasil ditambahkan.');
     }
 
-    // Menampilkan detail 
+    // Menampilkan detail HR
     public function show($id)
     {
         $hr = HR::findOrFail($id);
         return view('hr.show', compact('hr'));
     }
 
-    // Menampilkan form edit 
+    // Menampilkan form edit HR
     public function edit($id)
     {
         $hr = HR::findOrFail($id);
         return view('hr.edit', compact('hr'));
     }
 
-    // Memproses update data 
+    // Memperbarui data HR
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
+            'nama' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',        // hanya huruf dan spasi
+                'not_regex:/^\.+$/',            // tidak boleh hanya titik-titik
+            ],
+            'jabatan' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',        // hanya huruf dan spasi
+                'not_regex:/^\.+$/',            // tidak boleh hanya titik-titik
+            ],
         ]);
+        
 
         $hr = HR::findOrFail($id);
+        $hr->update($request->only(['nama', 'jabatan']));
 
-        $hr->update([
-            'nama' => $request->input('nama'),
-            'jabatan' => $request->input('jabatan'),
-        ]);
-
-        return redirect()->route('hr.show', $id);
+        return redirect()->route('hr.show', $id)->with('success', 'Data HR berhasil diperbarui.');
     }
 
-    // Menampilkan halaman konfirmasi hapus
+    // Menampilkan konfirmasi penghapusan
     public function delete($id)
     {
         $hr = HR::findOrFail($id);
         return view('hr.delete', compact('hr'));
     }
 
-
-
-    // Menghapus data 
+    // Menghapus data HR
     public function destroy($id)
     {
         $hr = HR::findOrFail($id);
-        $hr->ForceDelete();
+        $hr->forceDelete();
 
-        return redirect()->route('hr.index');
+        return redirect()->route('hr.index')->with('success', 'Data HR berhasil dihapus.');
     }
 }
-// test update 26 Mei

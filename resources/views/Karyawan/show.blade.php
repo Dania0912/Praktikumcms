@@ -4,7 +4,14 @@
 
 @section('content')
 <div class="container">
-    <div class="card shadow-sm border-0">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <div class="card shadow-sm border-0 mt-3">
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">Detail Karyawan</h4>
         </div>
@@ -18,15 +25,17 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a href="{{ route('karyawan.edit', $karyawan->id) }}" class="btn btn-warning">
-                    Edit
-                </a>
-                <a href="{{ route('karyawan.delete', $karyawan->id) }}" class="btn btn-danger">
-                    Hapus
-                </a>
                 <a href="{{ route('karyawan.index') }}" class="btn btn-secondary">
                     ← Kembali ke daftar
                 </a>
+                <div>
+                    <a href="{{ route('karyawan.edit', $karyawan->id) }}" class="btn btn-warning me-2">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                    <a href="{{ route('karyawan.delete', $karyawan->id) }}" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Hapus
+                    </a>
+                </div>
             </div>
         </div>
     </div>

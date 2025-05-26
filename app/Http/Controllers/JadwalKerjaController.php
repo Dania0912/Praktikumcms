@@ -23,7 +23,7 @@ class JadwalKerjaController extends Controller
     public function create()
     {
         $karyawans = Karyawan::all();
-        $hrs = HR::all(); // Ambil data HR untuk dropdown
+        $hrs = HR::all();
         return view('jadwalkerja.create', compact('karyawans', 'hrs'));
     }
 
@@ -35,20 +35,42 @@ class JadwalKerjaController extends Controller
             'id_hrs'          => 'required|exists:HRS,id',
             'tanggal_mulai'   => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'waktu_mulai'     => 'required|date_format:H:i',
-            'waktu_selesai'   => 'required|date_format:H:i|after:waktu_mulai',
+            'waktu_mulai'     => 'required|regex:/^\d{2}:\d{2}$/|date_format:H:i',
+            'waktu_selesai'   => 'required|regex:/^\d{2}:\d{2}$/|date_format:H:i|after:waktu_mulai',
+        ], [
+            'karyawan_id.required' => 'Nama karyawan wajib dipilih.',
+            'id_hrs.required' => 'HR yang bertanggung jawab wajib dipilih.',
+            'tanggal_mulai.required' => 'Tanggal mulai wajib diisi.',
+            'tanggal_mulai.date' => 'Format tanggal mulai tidak valid.',
+            'tanggal_selesai.required' => 'Tanggal selesai wajib diisi.',
+            'tanggal_selesai.date' => 'Format tanggal selesai tidak valid.',
+            'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
+            'waktu_mulai.regex' => 'Format waktu mulai harus berupa jam dan menit (HH:MM).',
+            'waktu_mulai.date_format' => 'Format waktu mulai tidak valid.',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi.',
+            'waktu_selesai.regex' => 'Format waktu selesai harus berupa jam dan menit (HH:MM).',
+            'waktu_selesai.date_format' => 'Format waktu selesai tidak valid.',
+            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
         ]);
 
-        // Simpan data dengan query manual agar TO_DATE() bisa dipakai untuk Oracle
         DB::insert("
-            INSERT INTO JADWALKERJA (KARYAWAN_ID, ID_HRS, TANGGAL_MULAI, TANGGAL_SELESAI, WAKTU_MULAI, WAKTU_SELESAI, CREATED_AT, UPDATED_AT)
-            VALUES (:karyawan_id, :id_hrs, TO_DATE(:tanggal_mulai, 'YYYY-MM-DD'), TO_DATE(:tanggal_selesai, 'YYYY-MM-DD'), TO_DATE(:waktu_mulai, 'HH24:MI:SS'), TO_DATE(:waktu_selesai, 'HH24:MI:SS'), SYSDATE, SYSDATE)
+            INSERT INTO JADWALKERJA (
+                KARYAWAN_ID, ID_HRS, TANGGAL_MULAI, TANGGAL_SELESAI, 
+                WAKTU_MULAI, WAKTU_SELESAI, CREATED_AT, UPDATED_AT
+            )
+            VALUES (
+                :karyawan_id, :id_hrs, TO_DATE(:tanggal_mulai, 'YYYY-MM-DD'),
+                TO_DATE(:tanggal_selesai, 'YYYY-MM-DD'),
+                TO_DATE(:waktu_mulai, 'HH24:MI:SS'),
+                TO_DATE(:waktu_selesai, 'HH24:MI:SS'),
+                SYSDATE, SYSDATE
+            )
         ", [
             'karyawan_id'     => $request->karyawan_id,
             'id_hrs'          => $request->id_hrs,
             'tanggal_mulai'   => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,
-            // Format waktu lengkap HH:mm:ss agar TO_DATE valid
             'waktu_mulai'     => Carbon::parse($request->waktu_mulai)->format('H:i:s'),
             'waktu_selesai'   => Carbon::parse($request->waktu_selesai)->format('H:i:s'),
         ]);
@@ -79,8 +101,22 @@ class JadwalKerjaController extends Controller
             'id_hrs'          => 'required|exists:HRS,id',
             'tanggal_mulai'   => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'waktu_mulai'     => 'required|date_format:H:i',
-            'waktu_selesai'   => 'required|date_format:H:i|after:waktu_mulai',
+            'waktu_mulai'     => 'required|regex:/^\d{2}:\d{2}$/|date_format:H:i',
+            'waktu_selesai'   => 'required|regex:/^\d{2}:\d{2}$/|date_format:H:i|after:waktu_mulai',
+        ], [
+            'id_hrs.required' => 'HR wajib dipilih.',
+            'tanggal_mulai.required' => 'Tanggal mulai wajib diisi.',
+            'tanggal_mulai.date' => 'Format tanggal mulai tidak valid.',
+            'tanggal_selesai.required' => 'Tanggal selesai wajib diisi.',
+            'tanggal_selesai.date' => 'Format tanggal selesai tidak valid.',
+            'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
+            'waktu_mulai.regex' => 'Format waktu mulai harus HH:MM.',
+            'waktu_mulai.date_format' => 'Format waktu mulai tidak sesuai.',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi.',
+            'waktu_selesai.regex' => 'Format waktu selesai harus HH:MM.',
+            'waktu_selesai.date_format' => 'Format waktu selesai tidak sesuai.',
+            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
         ]);
 
         DB::statement("
@@ -94,21 +130,21 @@ class JadwalKerjaController extends Controller
                 UPDATED_AT = SYSDATE
             WHERE ID = :id
         ", [
-            'id_hrs'         => $request->input('id_hrs'),
-            'tanggal_mulai'  => $request->input('tanggal_mulai'),
-            'tanggal_selesai'=> $request->input('tanggal_selesai'),
-            'waktu_mulai'    => date('H:i:s', strtotime($request->input('waktu_mulai'))),
-            'waktu_selesai'  => date('H:i:s', strtotime($request->input('waktu_selesai'))),
-            'id'             => $id,
+            'id_hrs'          => $request->input('id_hrs'),
+            'tanggal_mulai'   => $request->input('tanggal_mulai'),
+            'tanggal_selesai' => $request->input('tanggal_selesai'),
+            'waktu_mulai'     => date('H:i:s', strtotime($request->input('waktu_mulai'))),
+            'waktu_selesai'   => date('H:i:s', strtotime($request->input('waktu_selesai'))),
+            'id'              => $id,
         ]);
 
-        return redirect()->route('jadwalkerja.show', $id)->with('success', 'Data berhasil diupdate');
+        return redirect()->route('jadwalkerja.show', $id)->with('success', 'Data berhasil diperbarui');
     }
 
     // Menampilkan halaman konfirmasi hapus
     public function delete($id)
     {
-        $jadwalkerja = JadwalKerja::findOrFail($id);
+        $jadwalkerja = JadwalKerja::with(['karyawan', 'hrs'])->findOrFail($id);
         return view('jadwalkerja.delete', compact('jadwalkerja'));
     }
 
@@ -118,7 +154,6 @@ class JadwalKerjaController extends Controller
         $jadwalkerja = JadwalKerja::findOrFail($id);
         $jadwalkerja->delete();
 
-        return redirect()->route('jadwalkerja.index');
+        return redirect()->route('jadwalkerja.index')->with('success', 'Data jadwal kerja berhasil dihapus');
     }
 }
-// test update 26 Mei

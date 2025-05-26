@@ -25,22 +25,35 @@ class KaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',        // hanya huruf dan spasi
+                'not_regex:/^\.+$/',            // tidak boleh hanya titik-titik
+            ],
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
+            'jabatan' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',
+                'not_regex:/^\.+$/',
+            ],
             'riwayat_pekerjaan' => 'required|string|max:255',
+        ], [
+            'nama.regex' => 'Nama hanya boleh berisi huruf dan spasi.',
+            'nama.not_regex' => 'Nama tidak boleh hanya berisi titik.',
+            'jabatan.regex' => 'Jabatan hanya boleh berisi huruf dan spasi.',
+            'jabatan.not_regex' => 'Jabatan tidak boleh hanya berisi titik.',
         ]);
 
-        Karyawan::create([
-            'nama' => $request->input('nama'),
-            'tanggal_lahir' => $request->input('tanggal_lahir'),
-            'alamat' => $request->input('alamat'),
-            'jabatan' => $request->input('jabatan'),
-            'riwayat_pekerjaan' => $request->input('riwayat_pekerjaan'),
-        ]);
+        Karyawan::create($request->only([
+            'nama', 'tanggal_lahir', 'alamat', 'jabatan', 'riwayat_pekerjaan'
+        ]));
 
-        return redirect()->route('karyawan.index');
+        return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil ditambahkan');
     }
 
     // Menampilkan detail karyawan
@@ -61,24 +74,36 @@ class KaryawanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',
+                'not_regex:/^\.+$/',
+            ],
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
+            'jabatan' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-z\s]+$/',
+                'not_regex:/^\.+$/',
+            ],
             'riwayat_pekerjaan' => 'required|string|max:255',
+        ], [
+            'nama.regex' => 'Nama hanya boleh berisi huruf dan spasi.',
+            'nama.not_regex' => 'Nama tidak boleh hanya berisi titik.',
+            'jabatan.regex' => 'Jabatan hanya boleh berisi huruf dan spasi.',
+            'jabatan.not_regex' => 'Jabatan tidak boleh hanya berisi titik.',
         ]);
 
         $karyawan = Karyawan::findOrFail($id);
+        $karyawan->update($request->only([
+            'nama', 'tanggal_lahir', 'alamat', 'jabatan', 'riwayat_pekerjaan'
+        ]));
 
-        $karyawan->update([
-            'nama' => $request->input('nama'),
-            'tanggal_lahir' => $request->input('tanggal_lahir'),
-            'alamat' => $request->input('alamat'),
-            'jabatan' => $request->input('jabatan'),
-            'riwayat_pekerjaan' => $request->input('riwayat_pekerjaan'),
-        ]);
-
-        return redirect()->route('karyawan.show', $id);
+        return redirect()->route('karyawan.show', $id)->with('success', 'Data karyawan berhasil diperbarui');
     }
 
     // Menampilkan halaman konfirmasi hapus
@@ -94,7 +119,6 @@ class KaryawanController extends Controller
         $karyawan = Karyawan::findOrFail($id);
         $karyawan->delete();
 
-        return redirect()->route('karyawan.index');
+        return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil dihapus');
     }
 }
-// test update 26 Mei

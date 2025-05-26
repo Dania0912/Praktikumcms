@@ -16,7 +16,7 @@
                     <strong>Karyawan:</strong> {{ $jadwalkerja->karyawan->nama }}
                 </li>
                 <li class="list-group-item">
-                    <strong>HR:</strong> {{ $jadwalkerja->hr->nama }}
+                    <strong>HR:</strong> {{ $jadwalkerja->hrs->nama }}
                 </li>
                 <li class="list-group-item">
                     <strong>Tanggal Mulai:</strong> {{ $jadwalkerja->tanggal_mulai->format('Y-m-d') }}

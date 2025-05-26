@@ -9,45 +9,53 @@ use App\Models\HR;
 
 class PenggajianController extends Controller
 {
-    // Menampilkan form untuk membuat data penggajian baru
+    // Menampilkan semua data penggajian
+    public function index()
+    {
+        $penggajian = Penggajian::with(['karyawan', 'hr'])->get();
+        return view('penggajian.index', compact('penggajian'));
+    }
+
+    // Menampilkan form tambah penggajian
     public function create()
     {
         $karyawans = Karyawan::all();
-        $hrs = HR::all(); // ambil data HR untuk dropdown
+        $hrs = HR::all();
         return view('penggajian.create', compact('karyawans', 'hrs'));
     }
 
-    // Menyimpan data penggajian ke database
+    // Menyimpan data penggajian
     public function store(Request $request)
     {
         $request->validate([
             'karyawan_id' => 'required|exists:karyawan,id',
-            'gaji_pokok' => 'required|numeric',
-            'potongan' => 'required|numeric',
-            'bonus' => 'required|numeric',
+            'gaji_pokok' => 'required|numeric|min:0',
+            'potongan' => 'required|numeric|min:0',
+            'bonus' => 'required|numeric|min:0',
             'catatan' => 'nullable|string|max:255',
             'id_hrs' => 'required|exists:HRS,id',
+        ], [
+            'karyawan_id.required' => 'Nama karyawan wajib dipilih.',
+            'id_hrs.required' => 'HR yang bertanggung jawab wajib dipilih.',
+            'gaji_pokok.min' => 'Gaji pokok tidak boleh negatif.',
+            'potongan.min' => 'Potongan tidak boleh negatif.',
+            'bonus.min' => 'Bonus tidak boleh negatif.',
         ]);
-        
-        Penggajian::create([
-            'karyawan_id' => $request->input('karyawan_id'),
-            'gaji_pokok' => $request->input('gaji_pokok'),
-            'potongan' => $request->input('potongan'),
-            'bonus' => $request->input('bonus'),
-            'catatan' => $request->input('catatan'),
-            'id_hrs' => $request->input('id_hrs'),
-        ]);
-        
-        return redirect()->route('penggajian.index');
+
+        Penggajian::create($request->only([
+            'karyawan_id', 'gaji_pokok', 'potongan', 'bonus', 'catatan', 'id_hrs'
+        ]));
+
+        return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil ditambahkan.');
     }
 
     // Menampilkan detail penggajian
     public function show($id)
     {
-        $penggajian = Penggajian::find($id);
+        $penggajian = Penggajian::with(['karyawan', 'hr'])->find($id);
 
         if (!$penggajian) {
-            return redirect()->route('penggajian.index')->with('error', 'Data Penggajian tidak ditemukan.');
+            return redirect()->route('penggajian.index')->with('error', 'Data penggajian tidak ditemukan.');
         }
 
         return view('penggajian.show', compact('penggajian'));
@@ -57,45 +65,41 @@ class PenggajianController extends Controller
     public function edit($id)
     {
         $penggajian = Penggajian::findOrFail($id);
-        return view('penggajian.edit', compact('penggajian'));
+        $karyawans = Karyawan::all();
+        $hrs = HR::all();
+
+        return view('penggajian.edit', compact('penggajian', 'karyawans', 'hrs'));
     }
 
-    // Memproses update data penggajian
+    // Memperbarui data penggajian
     public function update(Request $request, $id)
     {
         $request->validate([
-            'gaji_pokok' => 'required|numeric',
-            'potongan' => 'required|numeric',
-            'bonus' => 'required|numeric',
+            'gaji_pokok' => 'required|numeric|min:0',
+            'potongan' => 'required|numeric|min:0',
+            'bonus' => 'required|numeric|min:0',
             'catatan' => 'nullable|string|max:255',
+        ], [
+            'gaji_pokok.min' => 'Gaji pokok tidak boleh negatif.',
+            'potongan.min' => 'Potongan tidak boleh negatif.',
+            'bonus.min' => 'Bonus tidak boleh negatif.',
         ]);
 
         $penggajian = Penggajian::findOrFail($id);
 
-        $penggajian->update([
-            'gaji_pokok' => $request->input('gaji_pokok'),
-            'potongan' => $request->input('potongan'),
-            'bonus' => $request->input('bonus'),
-            'catatan' => $request->input('catatan'),
-        ]);
+        $penggajian->update($request->only([
+            'gaji_pokok', 'potongan', 'bonus', 'catatan'
+        ]));
 
-        return redirect()->route('penggajian.show', $id);
+        return redirect()->route('penggajian.show', $id)->with('success', 'Data penggajian berhasil diperbarui.');
     }
 
-    // Menampilkan halaman konfirmasi hapus
+    // Menampilkan konfirmasi hapus
     public function delete($id)
     {
         $penggajian = Penggajian::findOrFail($id);
         return view('penggajian.delete', compact('penggajian'));
     }
-
-    public function index()
-    {
-        $penggajian = Penggajian::with(['karyawan', 'hr'])->get();
-        return view('penggajian.index', compact('penggajian'));
-    }
-    
-
 
     // Menghapus data penggajian
     public function destroy($id)
@@ -103,7 +107,6 @@ class PenggajianController extends Controller
         $penggajian = Penggajian::findOrFail($id);
         $penggajian->delete();
 
-        return redirect()->route('penggajian.index');
+        return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil dihapus.');
     }
 }
-// test update 26 Mei

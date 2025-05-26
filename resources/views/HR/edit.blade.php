@@ -11,8 +11,9 @@
 
         <div class="card-body">
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
+                <div class="alert alert-danger p-3">
+                    <strong>Data HR tidak berhasil disimpan, data tidak valid:</strong>
+                    <ul class="mb-0 mt-2">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -27,11 +28,17 @@
                 <div class="mb-3">
                     <label for="nama" class="form-label">Nama</label>
                     <input type="text" name="nama" class="form-control" value="{{ old('nama', $hr->nama) }}" required>
+                    @error('nama')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="jabatan" class="form-label">Jabatan</label>
                     <input type="text" name="jabatan" class="form-control" value="{{ old('jabatan', $hr->jabatan) }}" required>
+                    @error('jabatan')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="d-flex justify-content-between">
