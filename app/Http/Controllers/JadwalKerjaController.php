@@ -12,10 +12,23 @@ use Carbon\Carbon;
 class JadwalKerjaController extends Controller
 {
     // Menampilkan daftar semua jadwal kerja
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+    
+        $jadwalkerja = JadwalKerja::with('karyawan');
+        if ($search) {
+            $jadwalkerja = $jadwalkerja->whereHas('karyawan', function ($query) use ($search) {
+                $query->where('nama', 'like', "%{$search}%");
+            });
+        }
+
+    
+        $jadwalkerja = $jadwalkerja->get();
+    
         return view('jadwalkerja.index', [
-            'jadwalkerja' => JadwalKerja::all()
+            'jadwalkerja' => $jadwalkerja,
+            'search' => $search
         ]);
     }
 

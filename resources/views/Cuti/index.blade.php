@@ -10,6 +10,12 @@
         </a>
     </div>
 
+    <!-- Form Pencarian -->
+    <form action="{{ route('cuti.index') }}" method="GET" class="mb-4 d-flex" style="max-width: 400px;">
+        <input type="text" name="search" class="form-control me-2" placeholder="Cari nama cuti..." value="{{ request('search') }}">
+        <button type="submit" class="btn btn-primary">Cari</button>
+    </form>
+
     <div class="card shadow-sm border-0">
         <div class="card-body">
             <ul class="list-group">

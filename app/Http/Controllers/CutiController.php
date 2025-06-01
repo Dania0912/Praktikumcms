@@ -9,12 +9,26 @@ use App\Models\Karyawan;
 
 class CutiController extends Controller
 {
-    public function index()
-    {
-        return view('cuti.index', [
-            'cuti' => Cuti::all()
-        ]);
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    $cuti = Cuti::with('karyawan');
+
+    if ($search) {
+        $cuti = $cuti->whereHas('karyawan', function ($query) use ($search) {
+            $query->where('nama', 'like', "%{$search}%");
+        });
     }
+
+    $cuti = $cuti->get();
+
+    return view('cuti.index', [
+        'cuti' => $cuti,
+        'search' => $search
+    ]);
+}
+
 
     public function create()
     {

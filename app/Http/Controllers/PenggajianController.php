@@ -10,11 +10,23 @@ use App\Models\HR;
 class PenggajianController extends Controller
 {
     // Menampilkan semua data penggajian
-    public function index()
-    {
-        $penggajian = Penggajian::with(['karyawan', 'hr'])->get();
-        return view('penggajian.index', compact('penggajian'));
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    $penggajian = Penggajian::with(['karyawan', 'hr']);
+
+    if ($search) {
+        $penggajian = $penggajian->whereHas('karyawan', function ($query) use ($search) {
+            $query->where('nama', 'like', "%{$search}%");
+        });
     }
+
+    $penggajian = $penggajian->get();
+
+    return view('penggajian.index', compact('penggajian', 'search'));
+}
+
 
     // Menampilkan form tambah penggajian
     public function create()

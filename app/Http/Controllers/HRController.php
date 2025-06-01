@@ -8,12 +8,24 @@ use App\Models\HR;
 class HRController extends Controller
 {
     // Menampilkan semua data HR
-    public function index()
-    {
-        return view('hr.index', [
-            'hrs' => HR::all()
-        ]);
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    if ($search) {
+        $hrs = HR::where('nama', 'like', "%{$search}%")
+                  ->orWhere('jabatan', 'like', "%{$search}%")
+                  ->get();
+    } else {
+        $hrs = HR::all();
     }
+
+    return view('hr.index', [
+        'hrs' => $hrs,
+        'search' => $search
+    ]);
+}
+
 
     // Menampilkan form tambah HR
     public function create()

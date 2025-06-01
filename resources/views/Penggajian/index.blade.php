@@ -18,6 +18,12 @@
         </div>
     @endif
 
+    <!-- Form Pencarian -->
+    <form action="{{ route('penggajian.index') }}" method="GET" class="mb-4 d-flex" style="max-width: 400px;">
+        <input type="text" name="search" class="form-control me-2" placeholder="Cari nama penggajian..." value="{{ request('search') }}">
+        <button type="submit" class="btn btn-primary">Cari</button>
+    </form>
+
     <div class="card shadow-sm border-0">
         <div class="card-body">
             @if($penggajian->isEmpty())

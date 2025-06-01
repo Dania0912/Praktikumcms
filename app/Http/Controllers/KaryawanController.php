@@ -7,13 +7,25 @@ use App\Models\Karyawan;
 
 class KaryawanController extends Controller
 {
-    // Menampilkan daftar semua karyawan
-    public function index()
+
+    // Menampilkan daftar semua karyawan + pencarian
+    public function index(Request $request)
     {
+        $search = trim($request->input('search'));
+    
+        if ($search) {
+            $karyawan = Karyawan::where('nama', 'like', "%{$search}%")->get();  // atau paginate(10)
+        } else {
+            $karyawan = Karyawan::all();  // atau paginate(10)
+        }
+    
         return view('karyawan.index', [
-            'karyawan' => Karyawan::all()
+            'karyawan' => $karyawan,
+            'search' => $search
         ]);
     }
+    
+
 
     // Menampilkan form tambah karyawan
     public function create()
@@ -112,6 +124,8 @@ class KaryawanController extends Controller
         $karyawan = Karyawan::findOrFail($id);
         return view('karyawan.delete', compact('karyawan'));
     }
+
+    
 
     // Menghapus data karyawan
     public function destroy($id)
