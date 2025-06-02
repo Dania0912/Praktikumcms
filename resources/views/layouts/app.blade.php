@@ -24,6 +24,24 @@
     body {
       font-family: 'Inter', sans-serif;
     }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      background-color: #121212 !important;
+      color: #f5f5f5 !important;
+    }
+    body.dark-mode .navbar {
+      background-color: #1c1c1c !important;
+    }
+    body.dark-mode .navbar .nav-link {
+      color: #f5f5f5 !important;
+    }
+    body.dark-mode .navbar .nav-link:hover {
+      color: #cfcfcf !important;
+    }
+    body.dark-mode .container {
+      background-color: #1e1e1e;
+    }
   </style>
 </head>
 <body class="bg-light">
@@ -38,5 +56,19 @@
 
   <!-- Custom JS -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+      }
+    });
+  </script>
 </body>
 </html>

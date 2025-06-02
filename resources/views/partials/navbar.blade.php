@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-      <ul class="navbar-nav gap-2">
+      <ul class="navbar-nav gap-2 align-items-center">
         <li class="nav-item">
           <a class="nav-link text-white fw-semibold" href="/hr"><i class="bi bi-people-fill me-1"></i>HR</a>
         </li>
@@ -23,6 +23,12 @@
         </li>
         <li class="nav-item">
           <a class="nav-link text-white fw-semibold" href="/jadwalkerja"><i class="bi bi-clock-history me-1"></i>Jadwal Kerja</a>
+        </li>
+        <!-- Dark mode toggle button -->
+        <li class="nav-item">
+          <button class="btn btn-sm btn-outline-light ms-3" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+            <i class="bi bi-moon-fill"></i>
+          </button>
         </li>
       </ul>
     </div>
