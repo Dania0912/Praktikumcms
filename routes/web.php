@@ -6,6 +6,7 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\JadwalKerjaController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -40,3 +41,8 @@ Route::get('/jadwalkerja/{id}/delete', [JadwalKerjaController::class, 'delete'])
 Route::get('/jadwalkerja/{id}/edit', [JadwalKerjaController::class, 'edit'])->name('jadwalkerja.edit');
 Route::get('jadwalkerja/create', [JadwalKerjaController::class, 'create'])->name('jadwalkerja.create');
 Route::put('/jadwalkerja{id}/update', [JadwalKerjaController::class, 'update'])->name('jadwalkerja.update');
+
+
+Route::get('/pendaftaran-ktp', function () {
+    return "Selamat datang di halaman Pendaftaran KTP Online";
+})->middleware('check.age');
