@@ -36,12 +36,14 @@ Route::get('/penggajian/{id}/delete', [PenggajianController::class, 'delete'])->
 Route::get('/penggajian{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
 
 // ======================== Jadwal Kerja ========================
+Route::middleware(['check.hrquery'])->group(function () {
+Route::post('/jadwalkerja', [JadwalKerjaController::class, 'store'])->name('jadwalkerja.store');
 Route::resource('jadwalkerja', JadwalKerjaController::class);
 Route::get('/jadwalkerja/{id}/delete', [JadwalKerjaController::class, 'delete'])->name('jadwalkerja.delete');
 Route::get('/jadwalkerja/{id}/edit', [JadwalKerjaController::class, 'edit'])->name('jadwalkerja.edit');
 Route::get('jadwalkerja/create', [JadwalKerjaController::class, 'create'])->name('jadwalkerja.create');
 Route::put('/jadwalkerja{id}/update', [JadwalKerjaController::class, 'update'])->name('jadwalkerja.update');
-
+});
 
 Route::get('/pendaftaran-ktp', function () {
     return "Selamat datang di halaman Pendaftaran KTP Online";
