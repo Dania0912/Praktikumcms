@@ -7,6 +7,7 @@ use App\Http\Controllers\CutiController;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\JadwalKerjaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -48,3 +49,9 @@ Route::put('/jadwalkerja{id}/update', [JadwalKerjaController::class, 'update'])-
 Route::get('/pendaftaran-ktp', function () {
     return "Selamat datang di halaman Pendaftaran KTP Online";
 })->middleware('check.age');
+
+
+
+Route::get('/upload', [ImageController::class, 'create']);
+Route::post('/upload', [ImageController::class, 'store'])->name('image.upload');
+Route::delete('/upload/{id}', [ImageController::class, 'destroy'])->name('image.delete');
