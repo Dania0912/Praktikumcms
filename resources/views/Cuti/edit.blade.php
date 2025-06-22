@@ -4,12 +4,29 @@
 
 @section('content')
 <div class="container">
+
+    {{-- Notifikasi sukses --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    {{-- Notifikasi error --}}
+    @elseif (session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('errors') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="card shadow-sm border-0">
         <div class="card-header bg-warning text-dark">
             <h4 class="mb-0">Edit Cuti</h4>
         </div>
 
         <div class="card-body">
+            {{-- Validasi Form --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">

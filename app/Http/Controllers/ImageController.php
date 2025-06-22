@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Image;
-use Illuminate\Support\Facades\Storage; // ✅ Tambahkan baris ini
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {

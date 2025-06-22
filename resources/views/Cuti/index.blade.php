@@ -10,6 +10,21 @@
         </a>
     </div>
 
+    {{-- Notifikasi sukses --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    {{-- Notifikasi error --}}
+    @elseif (session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('errors') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <!-- Form Pencarian -->
     <form action="{{ route('cuti.index') }}" method="GET" class="mb-4 d-flex" style="max-width: 400px;">
         <input type="text" name="search" class="form-control me-2" placeholder="Cari nama cuti..." value="{{ request('search') }}">

@@ -6,29 +6,27 @@ use Illuminate\Http\Request;
 use App\Models\Penggajian;
 use App\Models\Karyawan;
 use App\Models\HR;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PenggajianController extends Controller
 {
-    // Menampilkan semua data penggajian
     public function index(Request $request)
-{
-    $search = $request->input('search');
+    {
+        $search = $request->input('search');
 
-    $penggajian = Penggajian::with(['karyawan', 'hr']);
+        $penggajian = Penggajian::with(['karyawan', 'hr']);
 
-    if ($search) {
-        $penggajian = $penggajian->whereHas('karyawan', function ($query) use ($search) {
-            $query->where('nama', 'like', "%{$search}%");
-        });
+        if ($search) {
+            $penggajian = $penggajian->whereHas('karyawan', function ($query) use ($search) {
+                $query->where('nama', 'like', "%{$search}%");
+            });
+        }
+
+        $penggajian = $penggajian->get();
+
+        return view('penggajian.index', compact('penggajian', 'search'));
     }
 
-    $penggajian = $penggajian->get();
-
-    return view('penggajian.index', compact('penggajian', 'search'));
-}
-
-
-    // Menampilkan form tambah penggajian
     public function create()
     {
         $karyawans = Karyawan::all();
@@ -36,7 +34,6 @@ class PenggajianController extends Controller
         return view('penggajian.create', compact('karyawans', 'hrs'));
     }
 
-    // Menyimpan data penggajian
     public function store(Request $request)
     {
         $request->validate([
@@ -54,36 +51,38 @@ class PenggajianController extends Controller
             'bonus.min' => 'Bonus tidak boleh negatif.',
         ]);
 
-        Penggajian::create($request->only([
-            'karyawan_id', 'gaji_pokok', 'potongan', 'bonus', 'catatan', 'id_hrs'
-        ]));
-
-        return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil ditambahkan.');
+        try {
+            Penggajian::create($request->only([
+                'karyawan_id', 'gaji_pokok', 'potongan', 'bonus', 'catatan', 'id_hrs'
+            ]));
+            return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->route('penggajian.index')->withErrors('Gagal menambahkan data penggajian.');
+        }
     }
 
-    // Menampilkan detail penggajian
     public function show($id)
     {
-        $penggajian = Penggajian::with(['karyawan', 'hr'])->find($id);
-
-        if (!$penggajian) {
-            return redirect()->route('penggajian.index')->with('error', 'Data penggajian tidak ditemukan.');
+        try {
+            $penggajian = Penggajian::with(['karyawan', 'hr'])->findOrFail($id);
+            return view('penggajian.show', compact('penggajian'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('penggajian.index')->withErrors('Data penggajian tidak ditemukan.');
         }
-
-        return view('penggajian.show', compact('penggajian'));
     }
 
-    // Menampilkan form edit penggajian
     public function edit($id)
     {
-        $penggajian = Penggajian::findOrFail($id);
-        $karyawans = Karyawan::all();
-        $hrs = HR::all();
-
-        return view('penggajian.edit', compact('penggajian', 'karyawans', 'hrs'));
+        try {
+            $penggajian = Penggajian::findOrFail($id);
+            $karyawans = Karyawan::all();
+            $hrs = HR::all();
+            return view('penggajian.edit', compact('penggajian', 'karyawans', 'hrs'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('penggajian.index')->withErrors('Data penggajian tidak ditemukan.');
+        }
     }
 
-    // Memperbarui data penggajian
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -97,28 +96,35 @@ class PenggajianController extends Controller
             'bonus.min' => 'Bonus tidak boleh negatif.',
         ]);
 
-        $penggajian = Penggajian::findOrFail($id);
-
-        $penggajian->update($request->only([
-            'gaji_pokok', 'potongan', 'bonus', 'catatan'
-        ]));
-
-        return redirect()->route('penggajian.show', $id)->with('success', 'Data penggajian berhasil diperbarui.');
+        try {
+            $penggajian = Penggajian::findOrFail($id);
+            $penggajian->update($request->only([
+                'gaji_pokok', 'potongan', 'bonus', 'catatan'
+            ]));
+            return redirect()->route('penggajian.show', $id)->with('success', 'Data penggajian berhasil diperbarui.');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('penggajian.index')->withErrors('Data penggajian tidak ditemukan.');
+        }
     }
 
-    // Menampilkan konfirmasi hapus
     public function delete($id)
     {
-        $penggajian = Penggajian::findOrFail($id);
-        return view('penggajian.delete', compact('penggajian'));
+        try {
+            $penggajian = Penggajian::findOrFail($id);
+            return view('penggajian.delete', compact('penggajian'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('penggajian.index')->withErrors('Data penggajian tidak ditemukan.');
+        }
     }
 
-    // Menghapus data penggajian
     public function destroy($id)
     {
-        $penggajian = Penggajian::findOrFail($id);
-        $penggajian->delete();
-
-        return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil dihapus.');
+        try {
+            $penggajian = Penggajian::findOrFail($id);
+            $penggajian->delete();
+            return redirect()->route('penggajian.index')->with('success', 'Data penggajian berhasil dihapus.');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('penggajian.index')->withErrors('Data penggajian tidak ditemukan.');
+        }
     }
 }

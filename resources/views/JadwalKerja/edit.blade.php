@@ -10,13 +10,20 @@
         </div>
 
         <div class="card-body">
+            {{-- Notifikasi Validasi --}}
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
+                <div class="alert alert-danger p-3">
+                    <strong>Data jadwal kerja tidak berhasil disimpan, data tidak valid:</strong>
+                    <ul class="mb-0 mt-2">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
+                </div>
+            @elseif (session('errors'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('errors') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
@@ -57,7 +64,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
                         <input type="date" name="tanggal_selesai" class="form-control" value="{{ old('tanggal_selesai', $jadwalkerja->tanggal_selesai->format('Y-m-d')) }}" required>
@@ -75,7 +81,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label for="waktu_selesai" class="form-label">Waktu Selesai</label>
                         <input type="time" name="waktu_selesai" class="form-control" value="{{ old('waktu_selesai', $jadwalkerja->waktu_selesai) }}" required>

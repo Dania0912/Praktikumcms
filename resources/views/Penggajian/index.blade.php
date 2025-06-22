@@ -3,6 +3,20 @@
 @section('title', 'Daftar Penggajian')
 
 @section('content')
+
+    {{-- Notifikasi sukses dan error --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @elseif (session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('errors') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">Daftar Penggajian</h2>
         <a href="{{ route('penggajian.create') }}" class="btn btn-success">
@@ -10,17 +24,9 @@
         </a>
     </div>
 
-    {{-- Notifikasi sukses --}}
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
     <!-- Form Pencarian -->
     <form action="{{ route('penggajian.index') }}" method="GET" class="mb-4 d-flex" style="max-width: 400px;">
-        <input type="text" name="search" class="form-control me-2" placeholder="Cari nama penggajian..." value="{{ request('search') }}">
+        <input type="text" name="search" class="form-control me-2" placeholder="Cari nama karyawan..." value="{{ request('search') }}">
         <button type="submit" class="btn btn-primary">Cari</button>
     </form>
 

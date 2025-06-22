@@ -4,9 +4,17 @@
 
 @section('content')
 <div class="container">
+
+    {{-- Notifikasi sukses --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {{-- Notifikasi error --}}
+    @elseif(session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            {{ session('errors') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif

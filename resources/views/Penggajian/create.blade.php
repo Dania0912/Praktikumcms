@@ -8,11 +8,27 @@
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">Tambah Data Penggajian</h4>
         </div>
+
         <div class="card-body">
-            @if($errors->any())
+
+            {{-- Notifikasi sukses atau error --}}
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @elseif (session('errors'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('errors') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            {{-- Validasi form --}}
+            @if ($errors->any())
                 <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->all() as $error)
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
@@ -85,9 +101,9 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('penggajian.index') }}" class="btn btn-secondary">← Kembali ke daftar</a>
+                    <a href="{{ route('penggajian.index') }}" class="btn btn-secondary">← Kembali</a>
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-save me-1"></i> Simpan Penggajian
+                        <i class="bi bi-save me-1"></i> Simpan
                     </button>
                 </div>
             </form>

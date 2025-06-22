@@ -3,15 +3,19 @@
 @section('title', 'Daftar Jadwal Kerja')
 
 @section('content')
-    {{-- Notifikasi sukses --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-    @endif
 
-    
+    {{-- Notifikasi sukses dan error --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @elseif (session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('errors') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">Daftar Jadwal Kerja</h2>
@@ -22,7 +26,7 @@
 
     <!-- Form Pencarian -->
     <form action="{{ route('jadwalkerja.index') }}" method="GET" class="mb-4 d-flex" style="max-width: 400px;">
-        <input type="text" name="search" class="form-control me-2" placeholder="Cari nama jadwalkerja..." value="{{ request('search') }}">
+        <input type="text" name="search" class="form-control me-2" placeholder="Cari nama karyawan..." value="{{ request('search') }}">
         <button type="submit" class="btn btn-primary">Cari</button>
     </form>
 
@@ -32,12 +36,10 @@
                 @forelse($jadwalkerja as $jadwal)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                        <strong>{{ $jadwal->karyawan->nama ?? 'Nama karyawan tidak ditemukan' }}</strong><br>
-<small class="text-muted">
-    {{ $jadwal->hrs->nama ?? 'HR tidak tersedia' }} |
-
-                                {{ \Carbon\Carbon::parse($jadwal->tanggal_mulai)->translatedFormat('l, d M Y') }}
-                                {{ $jadwal->waktu_mulai }} - 
+                            <strong>{{ $jadwal->karyawan->nama ?? 'Nama karyawan tidak ditemukan' }}</strong><br>
+                            <small class="text-muted">
+                                {{ $jadwal->hrs->nama ?? 'HR tidak tersedia' }} |
+                                {{ \Carbon\Carbon::parse($jadwal->tanggal_mulai)->translatedFormat('l, d M Y') }} {{ $jadwal->waktu_mulai }} -
                                 {{ \Carbon\Carbon::parse($jadwal->tanggal_selesai)->translatedFormat('d M Y') }}
                             </small>
                         </div>

@@ -8,13 +8,17 @@ use Illuminate\Http\Request;
 class CheckHRQuery
 {
     public function handle(Request $request, Closure $next)
-    {
-        $role = $request->query('role');
-
-        if ($role !== 'hr') {
-            return response('Maaf, hanya HR yang dapat mengubah data Jadwal Kerja.', 403);
-        }
-
+{
+    // Izinkan SEMUA akses GET (index, show) meskipun bukan HR
+    if ($request->isMethod('get')) {
         return $next($request);
     }
+
+    // Hanya blokir POST/PUT/DELETE untuk non-HR
+    if (!auth()->check() || auth()->user()->role !== 'hr') {
+        return response('Hanya HR yang dapat mengubah data Jadwal Kerja', 403);
+    }
+    
+    return $next($request);
+}
 }

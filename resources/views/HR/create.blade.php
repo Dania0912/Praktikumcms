@@ -10,10 +10,24 @@
         </div>
 
         <div class="card-body">
+
+            {{-- Notifikasi sukses --}}
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @elseif (session('errors'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('errors') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            {{-- Validasi form --}}
             @if ($errors->any())
-                <div class="alert alert-danger p-3">
-                    <strong>Data HR tidak berhasil disimpan, data tidak valid:</strong>
-                    <ul class="mb-0 mt-2">
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach

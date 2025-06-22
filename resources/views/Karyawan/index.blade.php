@@ -3,9 +3,17 @@
 @section('title', 'Daftar Karyawan')
 
 @section('content')
+    {{-- Notifikasi sukses --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    {{-- Notifikasi error --}}
+    @elseif(session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('errors') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
@@ -17,7 +25,7 @@
         </a>
     </div>
 
-    <!-- Form Pencarian -->
+    {{-- Form Pencarian --}}
     <form action="{{ route('karyawan.index') }}" method="GET" class="mb-4 d-flex" style="max-width: 400px;">
         <input type="text" name="search" class="form-control me-2" placeholder="Cari nama karyawan..." value="{{ request('search') }}">
         <button type="submit" class="btn btn-primary">Cari</button>
@@ -36,8 +44,11 @@
                             <a href="{{ route('karyawan.edit', $k->id) }}" class="btn btn-warning btn-sm me-1">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
-                            <a href="{{ route('karyawan.show', $k->id) }}" class="btn btn-info btn-sm">
+                            <a href="{{ route('karyawan.show', $k->id) }}" class="btn btn-info btn-sm me-1">
                                 <i class="bi bi-eye"></i> Detail
+                            </a>
+                            <a href="{{ route('karyawan.delete', $k->id) }}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Hapus
                             </a>
                         </div>
                     </li>
