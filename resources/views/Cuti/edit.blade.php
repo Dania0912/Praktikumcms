@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
 
-    {{-- Notifikasi sukses --}}
+{{-- Notifikasi sukses --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}

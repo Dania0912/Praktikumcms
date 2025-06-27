@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
 
-    {{-- Notifikasi sukses --}}
+{{-- Notifikasi sukses --}}Add commentMore actions
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -19,6 +19,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+
 
     <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white">

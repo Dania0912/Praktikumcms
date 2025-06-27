@@ -20,12 +20,20 @@
                     </ul>
                 </div>
 
-            @elseif (session('errors'))
-            <div class="alert alert-error alert-dismissible fade show" role="alert">
-                {{ session('errors') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
+                {{-- Notifikasi sukses --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    {{-- Notifikasi error --}}
+    @elseif (session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('errors') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
             <form action="{{ route('hr.update', $hr->id) }}" method="POST">
                 @csrf

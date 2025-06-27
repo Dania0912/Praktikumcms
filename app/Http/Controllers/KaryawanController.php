@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class KaryawanController extends Controller
 {
-    // Menampilkan daftar semua karyawan + pencarian
     public function index(Request $request)
     {
         $search = trim($request->input('search'));
@@ -25,38 +24,19 @@ class KaryawanController extends Controller
         ]);
     }
 
-    // Menampilkan form tambah karyawan
     public function create()
     {
         return view('karyawan.create');
     }
 
-    // Menyimpan data karyawan baru
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => [
-                'required',
-                'string',
-                'max:100',
-                'regex:/^[A-Za-z\s]+$/',
-                'not_regex:/^\.+$/',
-            ],
+            'nama' => ['required', 'string', 'max:100', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/^\.+$/'],
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string|max:255',
-            'jabatan' => [
-                'required',
-                'string',
-                'max:100',
-                'regex:/^[A-Za-z\s]+$/',
-                'not_regex:/^\.+$/',
-            ],
+            'jabatan' => ['required', 'string', 'max:100', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/^\.+$/'],
             'riwayat_pekerjaan' => 'required|string|max:255',
-        ], [
-            'nama.regex' => 'Nama hanya boleh berisi huruf dan spasi.',
-            'nama.not_regex' => 'Nama tidak boleh hanya berisi titik.',
-            'jabatan.regex' => 'Jabatan hanya boleh berisi huruf dan spasi.',
-            'jabatan.not_regex' => 'Jabatan tidak boleh hanya berisi titik.',
         ]);
 
         try {
@@ -69,7 +49,6 @@ class KaryawanController extends Controller
         }
     }
 
-    // Menampilkan detail karyawan
     public function show($id)
     {
         try {
@@ -80,7 +59,6 @@ class KaryawanController extends Controller
         }
     }
 
-    // Menampilkan form edit karyawan
     public function edit($id)
     {
         try {
@@ -91,32 +69,14 @@ class KaryawanController extends Controller
         }
     }
 
-    // Memproses update data karyawan
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => [
-                'required',
-                'string',
-                'max:100',
-                'regex:/^[A-Za-z\s]+$/',
-                'not_regex:/^\.+$/',
-            ],
+            'nama' => ['required', 'string', 'max:100', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/^\.+$/'],
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string|max:255',
-            'jabatan' => [
-                'required',
-                'string',
-                'max:100',
-                'regex:/^[A-Za-z\s]+$/',
-                'not_regex:/^\.+$/',
-            ],
+            'jabatan' => ['required', 'string', 'max:100', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/^\.+$/'],
             'riwayat_pekerjaan' => 'required|string|max:255',
-        ], [
-            'nama.regex' => 'Nama hanya boleh berisi huruf dan spasi.',
-            'nama.not_regex' => 'Nama tidak boleh hanya berisi titik.',
-            'jabatan.regex' => 'Jabatan hanya boleh berisi huruf dan spasi.',
-            'jabatan.not_regex' => 'Jabatan tidak boleh hanya berisi titik.',
         ]);
 
         try {
@@ -130,7 +90,6 @@ class KaryawanController extends Controller
         }
     }
 
-    // Menampilkan halaman konfirmasi hapus
     public function delete($id)
     {
         try {
@@ -141,7 +100,6 @@ class KaryawanController extends Controller
         }
     }
 
-    // Menghapus data karyawan
     public function destroy($id)
     {
         try {

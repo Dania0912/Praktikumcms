@@ -7,26 +7,26 @@ use App\Models\Cuti;
 use App\Models\HR;
 use App\Models\Karyawan;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class CutiController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $query = Cuti::with('karyawan');
 
-        $cuti = Cuti::with('karyawan');
-
-        if ($search) {
-            $cuti = $cuti->whereHas('karyawan', function ($query) use ($search) {
-                $query->where('nama', 'like', "%{$search}%");
+        if ($request->has('search')) {
+            $query->whereHas('karyawan', function ($q) use ($request) {
+                $q->where('nama', 'like', "%{$request->search}%");
             });
         }
 
-        $cuti = $cuti->get();
+        $cuti = $query->get();
 
         return view('cuti.index', [
             'cuti' => $cuti,
-            'search' => $search
+            'search' => $request->search
         ]);
     }
 
@@ -39,34 +39,26 @@ class CutiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'karyawan_id' => ['required', 'exists:karyawan,id'],
-            'tanggal_mulai' => ['required', 'date'],
-            'tanggal_selesai' => ['required', 'date', 'after_or_equal:tanggal_mulai'],
-            'keterangan_cuti' => ['required', 'string', 'max:255', 'not_regex:/^\.+$/'],
-            'id_hrs' => ['required', 'exists:HRS,id'],
-        ], [
-            'karyawan_id.required' => 'Karyawan harus dipilih.',
-            'karyawan_id.exists' => 'Karyawan tidak ditemukan.',
-            'tanggal_mulai.required' => 'Tanggal mulai cuti wajib diisi.',
-            'tanggal_mulai.date' => 'Tanggal mulai cuti tidak valid.',
-            'tanggal_selesai.required' => 'Tanggal selesai cuti wajib diisi.',
-            'tanggal_selesai.date' => 'Tanggal selesai cuti tidak valid.',
-            'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
-            'keterangan_cuti.required' => 'Keterangan cuti wajib diisi.',
-            'keterangan_cuti.max' => 'Keterangan cuti maksimal 255 karakter.',
-            'keterangan_cuti.not_regex' => 'Keterangan cuti tidak boleh hanya terdiri dari titik-titik.',
-            'id_hrs.required' => 'HR harus dipilih.',
-            'id_hrs.exists' => 'HR tidak ditemukan.',
-        ]);
-
         try {
-            Cuti::create($request->only([
-                'karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti', 'id_hrs'
-            ]));
+            $validated = $request->validate([
+                'karyawan_id' => 'required|exists:karyawan,id',
+                'tanggal_mulai' => 'required|date',
+                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+                'keterangan_cuti' => 'required|string|max:15|not_regex:/^\.+$/',
+                'id_hrs' => 'required|exists:HRS,id',
+            ]);
+
+            Cuti::create($validated);
+
             return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil ditambahkan.');
-        } catch (\Exception $e) {
-            return redirect()->route('cuti.index')->withErrors('Gagal menambahkan data cuti.');
+        } catch (Throwable $e) {
+            Log::error('Gagal menyimpan cuti', [
+                'message' => $e->getMessage(),
+                'input' => $request->all(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
 
@@ -76,7 +68,7 @@ class CutiController extends Controller
             $cuti = Cuti::findOrFail($id);
             return view('cuti.show', compact('cuti'));
         } catch (ModelNotFoundException $e) {
-            return redirect()->route('cuti.index')->withErrors('Data cuti tidak ditemukan.');
+            return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
         }
     }
 
@@ -88,38 +80,36 @@ class CutiController extends Controller
             $hrs = HR::all();
             return view('cuti.edit', compact('cuti', 'karyawans', 'hrs'));
         } catch (ModelNotFoundException $e) {
-            return redirect()->route('cuti.index')->withErrors('Data cuti tidak ditemukan.');
+            return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
         }
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'tanggal_mulai' => ['required', 'date'],
-            'tanggal_selesai' => ['required', 'date', 'after_or_equal:tanggal_mulai'],
-            'keterangan_cuti' => ['required', 'string', 'max:255', 'not_regex:/^\.+$/'],
-            'id_hrs' => ['required', 'exists:HRS,id'],
-        ], [
-            'tanggal_mulai.required' => 'Tanggal mulai cuti wajib diisi.',
-            'tanggal_mulai.date' => 'Tanggal mulai cuti tidak valid.',
-            'tanggal_selesai.required' => 'Tanggal selesai cuti wajib diisi.',
-            'tanggal_selesai.date' => 'Tanggal selesai cuti tidak valid.',
-            'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
-            'keterangan_cuti.required' => 'Keterangan cuti wajib diisi.',
-            'keterangan_cuti.max' => 'Keterangan cuti maksimal 255 karakter.',
-            'keterangan_cuti.not_regex' => 'Keterangan cuti tidak boleh hanya terdiri dari titik-titik.',
-            'id_hrs.required' => 'HR harus dipilih.',
-            'id_hrs.exists' => 'HR tidak ditemukan.',
-        ]);
-
         try {
             $cuti = Cuti::findOrFail($id);
-            $cuti->update($request->only([
-                'tanggal_mulai', 'tanggal_selesai', 'keterangan_cuti', 'id_hrs'
-            ]));
-            return redirect()->route('cuti.show', $id)->with('success', 'Data cuti berhasil diperbarui.');
+
+            $validated = $request->validate([
+                'tanggal_mulai' => 'required|date',
+                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+                'keterangan_cuti' => 'required|string|<max:15></max:15>|not_regex:/^\.+$/',
+                'id_hrs' => 'required|exists:HRS,id',
+            ]);
+
+            $cuti->update($validated);
+
+            return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil diperbarui.');
         } catch (ModelNotFoundException $e) {
-            return redirect()->route('cuti.index')->withErrors('Data cuti tidak ditemukan.');
+            return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
+        } catch (Throwable $e) {
+            Log::error('Gagal memperbarui cuti', [
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'input' => $request->all(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan saat memperbarui data.');
         }
     }
 
@@ -129,7 +119,7 @@ class CutiController extends Controller
             $cuti = Cuti::findOrFail($id);
             return view('cuti.delete', compact('cuti'));
         } catch (ModelNotFoundException $e) {
-            return redirect()->route('cuti.index')->withErrors('Data cuti tidak ditemukan.');
+            return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
         }
     }
 
@@ -138,9 +128,18 @@ class CutiController extends Controller
         try {
             $cuti = Cuti::findOrFail($id);
             $cuti->delete();
+
             return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil dihapus.');
         } catch (ModelNotFoundException $e) {
-            return redirect()->route('cuti.index')->withErrors('Data cuti tidak ditemukan.');
+            return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
+        } catch (Throwable $e) {
+            Log::error('Gagal menghapus cuti', [
+                'id' => $id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->route('cuti.index')->with('error', 'Terjadi kesalahan saat menghapus data.');
         }
     }
 }
