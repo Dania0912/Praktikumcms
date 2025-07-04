@@ -41,11 +41,11 @@ class CutiController extends Controller
     {
         try {
             $validated = $request->validate([
-                'karyawan_id' => 'required|exists:karyawan,id',
-                'tanggal_mulai' => 'required|date',
+                'karyawan_id'     => 'required|exists:karyawan,id',
+                'tanggal_mulai'   => 'required|date',
                 'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
                 'keterangan_cuti' => 'required|string|max:15|not_regex:/^\.+$/',
-                'id_hrs' => 'required|exists:HRS,id',
+                'id_hrs'          => 'required|exists:HRS,id',
             ]);
 
             Cuti::create($validated);
@@ -54,8 +54,8 @@ class CutiController extends Controller
         } catch (Throwable $e) {
             Log::error('Gagal menyimpan cuti', [
                 'message' => $e->getMessage(),
-                'input' => $request->all(),
-                'trace' => $e->getTraceAsString()
+                'input'   => $request->all(),
+                'trace'   => $e->getTraceAsString()
             ]);
 
             return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan saat menyimpan data.');
@@ -85,33 +85,34 @@ class CutiController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        try {
-            $cuti = Cuti::findOrFail($id);
+{
+    try {
+        $cuti = Cuti::findOrFail($id);
 
-            $validated = $request->validate([
-                'tanggal_mulai' => 'required|date',
-                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-                'keterangan_cuti' => 'required|string|<max:15></max:15>|not_regex:/^\.+$/',
-                'id_hrs' => 'required|exists:HRS,id',
-            ]);
+        $validated = $request->validate([
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'keterangan_cuti' => 'required|string|max:15|not_regex:/^\.+$/',
+            'id_hrs' => 'required|exists:HRS,id',
+        ]);
 
-            $cuti->update($validated);
+        $cuti->update($validated);
 
-            return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil diperbarui.');
-        } catch (ModelNotFoundException $e) {
-            return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
-        } catch (Throwable $e) {
-            Log::error('Gagal memperbarui cuti', [
-                'id' => $id,
-                'message' => $e->getMessage(),
-                'input' => $request->all(),
-                'trace' => $e->getTraceAsString()
-            ]);
+        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil diperbarui.');
+    } catch (ModelNotFoundException $e) {
+        return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
+    } catch (\Throwable $e) {
+        \Log::error('Gagal memperbarui cuti', [
+            'id' => $id,
+            'message' => $e->getMessage(),
+            'input' => $request->all(),
+            'trace' => $e->getTraceAsString()
+        ]);
 
-            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan saat memperbarui data.');
-        }
+        return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan saat memperbarui data.');
     }
+}
+
 
     public function delete($id)
     {
@@ -134,9 +135,9 @@ class CutiController extends Controller
             return redirect()->route('cuti.index')->with('error', 'Data cuti tidak ditemukan.');
         } catch (Throwable $e) {
             Log::error('Gagal menghapus cuti', [
-                'id' => $id,
+                'id'      => $id,
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace'   => $e->getTraceAsString()
             ]);
 
             return redirect()->route('cuti.index')->with('error', 'Terjadi kesalahan saat menghapus data.');

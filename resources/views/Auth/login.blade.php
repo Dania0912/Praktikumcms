@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('content')
+@section('title', 'Login HR')
 
+@section('content')
 <style>
-  /* Background gradien animasi */
   body::before {
     content: "";
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: linear-gradient(-45deg,rgb(155, 187, 235),rgb(235, 243, 186),rgb(164, 193, 251),rgb(233, 251, 173));
+    background: linear-gradient(-45deg, #9bbbeb, #ebf3ba, #a4c1fb, #e9fbad);
     background-size: 400% 400%;
     animation: gradientShift 12s ease infinite;
     z-index: -1;
-    opacity: 0.2;
+    opacity: 0.3;
   }
 
   @keyframes gradientShift {
@@ -23,12 +23,40 @@
   }
 
   .login-box {
-    max-width: 420px;
-    margin: 80px auto;
-    padding: 40px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+    max-width: 460px;
+    margin: 100px auto;
+    padding: 45px 35px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .login-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    color: #0d6efd;
+    margin-bottom: 30px;
+  }
+
+  .form-label {
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    border-radius: 30px;
+    font-weight: 600;
+    padding: 10px 0;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    padding: 10px 15px;
+  }
+
+  .alert {
+    font-size: 0.95rem;
   }
 
   body.dark-mode .login-box {
@@ -42,33 +70,19 @@
     border: 1px solid #444;
   }
 
-  .form-label {
-    font-weight: 600;
-  }
-
-  .login-title {
-    font-size: 1.75rem;
-    font-weight: bold;
-    margin-bottom: 25px;
-    text-align: center;
-  }
-
-  .btn-primary {
-    border-radius: 30px;
-    font-weight: 600;
-  }
-
-  .form-control {
-    border-radius: 8px;
+  body.dark-mode .login-title {
+    color: #90cdf4;
   }
 </style>
 
 <div class="container">
   <div class="login-box">
-    <div class="login-title">Login HR</div>
+    <div class="login-title">
+      <i class="bi bi-shield-lock-fill me-2"></i>Login HR
+    </div>
 
     @if ($errors->any())
-      <div class="alert alert-danger">
+      <div class="alert alert-danger text-center">
         {{ $errors->first() }}
       </div>
     @endif
@@ -77,10 +91,9 @@
       @csrf
 
       <div class="mb-3">
-  <label for="email" class="form-label">Email</label>
-  <input type="email" name="email" class="form-control" required autofocus value="{{ old('email') }}">
-</div>
-
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" required autofocus value="{{ old('email') }}">
+      </div>
 
       <div class="mb-4">
         <label for="password" class="form-label">Password</label>
@@ -95,5 +108,4 @@
     </form>
   </div>
 </div>
-
 @endsection

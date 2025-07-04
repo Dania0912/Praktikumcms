@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Travel Explore</title>
+  <title>@yield('title', 'Travel Explore')</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -33,15 +33,16 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.08);
     }
 
-    /* Sticky footer fix */
     html, body {
       height: 100%;
     }
+
     body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
+
     main {
       flex: 1;
     }
@@ -60,7 +61,6 @@
       color: #dce7ff;
     }
 
-    /* Dark mode */
     body.dark-mode {
       background-color: #121212 !important;
       color: #f5f5f5 !important;
@@ -96,19 +96,34 @@
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+        @auth
         <ul class="navbar-nav gap-2 align-items-center">
           <li class="nav-item"><a class="nav-link text-white fw-semibold" href="/hr"><i class="bi bi-people-fill me-1"></i>HR</a></li>
           <li class="nav-item"><a class="nav-link text-white fw-semibold" href="/karyawan"><i class="bi bi-person-badge me-1"></i>Karyawan</a></li>
           <li class="nav-item"><a class="nav-link text-white fw-semibold" href="/cuti"><i class="bi bi-calendar-check me-1"></i>Cuti</a></li>
           <li class="nav-item"><a class="nav-link text-white fw-semibold" href="/penggajian"><i class="bi bi-cash-stack me-1"></i>Penggajian</a></li>
           <li class="nav-item"><a class="nav-link text-white fw-semibold" href="/jadwalkerja"><i class="bi bi-clock-history me-1"></i>Jadwal Kerja</a></li>
+
+          {{-- Tombol Dark Mode --}}
           <li class="nav-item">
             <button class="btn btn-sm btn-outline-light ms-3" onclick="toggleDarkMode()" title="Toggle Dark Mode">
               <i class="bi bi-moon-fill"></i>
             </button>
           </li>
+
+          {{-- Tombol Logout --}}
+          <li class="nav-item ms-2">
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+              @csrf
+              <button class="btn btn-sm btn-light" type="submit">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+              </button>
+            </form>
+          </li>
         </ul>
+        @endauth
       </div>
     </div>
   </nav>

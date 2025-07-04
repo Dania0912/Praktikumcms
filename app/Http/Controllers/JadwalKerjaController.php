@@ -122,7 +122,7 @@ class JadwalKerjaController extends Controller
             return view('jadwalkerja.edit', compact('jadwalkerja', 'karyawans', 'hrs'));
         } catch (ModelNotFoundException $e) {
             Log::warning("Gagal membuka form edit. Jadwal kerja ID {$id} tidak ditemukan.");
-            return redirect()->route('jadwalkerja.index')->withErrors('Data jadwal kerja tidak ditemukan.');
+            return redirect()->route('jadwalkerja.index')->withErrors('Data jadwal kerja tidak ditemukan');
         }
     }
 
