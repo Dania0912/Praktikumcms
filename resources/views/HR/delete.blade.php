@@ -4,15 +4,12 @@
 
 @section('content')
 <div class="container py-4">
-
-{{-- Notifikasi sukses --}}
+    {{-- Notifikasi sukses --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-
-    {{-- Notifikasi error --}}
     @elseif (session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('errors') }}
@@ -33,6 +30,9 @@
                 </li>
                 <li class="list-group-item">
                     <strong>Jabatan:</strong> {{ $hr->jabatan }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Email:</strong> {{ $hr->email }}
                 </li>
             </ul>
 

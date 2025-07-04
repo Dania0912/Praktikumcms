@@ -5,21 +5,17 @@
 @section('content')
 <div class="container">
 
-    {{-- Notifikasi sukses --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-
-    {{-- Notifikasi error --}}
     @elseif (session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('errors') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
 
     <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white">
@@ -30,6 +26,7 @@
                 <div class="mb-4">
                     <p><strong>Nama:</strong> {{ $hr->nama }}</p>
                     <p><strong>Jabatan:</strong> {{ $hr->jabatan }}</p>
+                    <p><strong>Email:</strong> {{ $hr->email }}</p>
                 </div>
 
                 <div class="d-flex justify-content-between">

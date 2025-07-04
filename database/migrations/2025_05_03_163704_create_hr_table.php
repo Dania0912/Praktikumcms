@@ -10,10 +10,11 @@ return new class extends Migration
     {
         Schema::create('hrs', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('jabatan');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
-
         });
     }
 

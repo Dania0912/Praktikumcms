@@ -10,20 +10,18 @@
         </div>
 
         <div class="card-body">
-        {{-- Notifikasi sukses --}}
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-    {{-- Notifikasi error --}}
-    @elseif (session('errors'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('errors') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+            {{-- Notifikasi sukses --}}
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @elseif (session('errors'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('errors') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <form action="{{ route('hr.store') }}" method="POST">
                 @csrf
@@ -40,6 +38,22 @@
                     <label for="jabatan" class="form-label">Jabatan</label>
                     <input type="text" name="jabatan" class="form-control" value="{{ old('jabatan') }}" required>
                     @error('jabatan')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                    @error('email')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                    @error('password')
                         <div class="text-danger small">{{ $message }}</div>
                     @enderror
                 </div>
